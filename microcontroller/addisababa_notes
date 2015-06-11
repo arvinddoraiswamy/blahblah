@@ -1,0 +1,22 @@
+- Max of 19 characters inclusive of null byte are taken as username and password.
+- Looks like no huge string to overwrite ret, which in a way is a blessing. I was getting bored :D
+- Input copied from 38c6 to 38d9. That's if an 18 character string is given. 19th char is the null byte.
+- test_password_valid is one big red herring. Totally trolled everyone on every level.
+- printf looks vulnerable. Format string vuln needs to be exploited.
+- Call to unlock door is at 4490.
+- Actual address of unlock door is at 44da.
+- Main doesn't call login at all. There's no return address to overwrite at all. So what will you overwrite? Can't do it in the old way unless you can overwrite inside main which er does not sound logical. Why will the program suddenly jump to your locations?
+
+- printf at 447c takes r11 as input. r11 has the password. Pretty sure we have to inject here.
+- %x will write an address. Refer manual. %n will write into an address.
+- Have to give a number of format strings and overwrite some return address to either 4490 or 44da. How much and which function we have to now find out.
+
+44da%x%x%x%x prints stuff from the stack
+44da%x%x%x%n causes a load address unaligned error
+
+- 1 %x prints 2 bytes, 2 %x prints 4 bytes
+- 2 %x starts printing at the start of userinput. Meaning AA%x%x prints AA<some 2 bytes><4141>
+- c0382e25782e256e writes the number 4 to 38c0. But it overwrites the whole byte to 0400 which is not what we want.
+- We need to overwrite to 9044, it's currently 8044.Hmm.
+- 8e442e25632e256e overwrites the jump and goes straight to unlockdoor :)
+- You can overwrite ANY memory..remember.

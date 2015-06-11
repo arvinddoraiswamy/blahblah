@@ -1,0 +1,51 @@
+- Memory flushed to zero before main()
+- rand() called as main's first instruction
+- Entire code copied to some random instruction in memory
+- When main returns it calls into the code section that was written into memory
+- First calls aslr_main()
+- This then calls _aslr_main()
+- This starts overwriting the entire code section starting at 4400
+
+- Username max 8 chars and starts at 2426. Gets overwritten with 0's though.
+- Password stored at the same place.
+- conditional_unlock_door is 642 chars away from the start of the code. Test jump here.
+
+Username: 7825782578257825
+Password: 30127f00b012086fb059
+
+- Username input is not of any use.
+- Password input ret from _aslr_main is on the 9th byte for some reason. Our code needs to be at that point.
+- Code jumps there alright but it crashes if i try and write some random instruction like 30127f00, which really is push 7f but that fails. Hmm.
+- Writing push 7f and calling INT also fails - it's looking for some address, not a direct instruction.
+- Calling conditional_unlock_door also fails. Probably correctly, as it'll trigger an unlock only on a correct password, which we have not given.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+- Yess!! You need to overwrite the stack pointer ret with the address of the start of our password. The password must contain assembly for the followi	ng:
+  
+- Set breakpoint on last instruction of main to get ASLR address
+- Calc ASLR addr + 4ec to get _INT address
+- Add _INT to end of assembly code of push 7f, call INT
+- Continue. Enter username and continue
+- Let password pop up. Look at r11. That's what the start of the password is. Append this to the end of the assembly code
+- Continue and unlock door
+- Difference of 36a between leaked address and aslr address. Calculate leaked - 36a = ASLR address. ASLR + 4ec = return address
+
+  push #0x7f
+  call #0x(ASLR generated address + 4ec)  (This is because _INT is located at 4ec from the start of the program)
+
+  Here is a sample. Here c742 is the location of _INT and c098 is the start of the password (in r11):
+  Username: 7825782578257825
+  Password: 30127f00b012 42c7 98c0 [Ignore spaces]
+
+- Eventually this worked
+username - 7825782578257825
+password - 42427f424242424216d542427f00
+
+ignore the push 7f call INT as the stack too was randomized. Call INT directly by adding 7f00 to your input. INT picks it up from sp+2 and plays around with it and calls INT with it.
+------------------------------------------------------------------------------------------------------------------------------------------------------
+ASLR:
+- Both bytes are randomized each time for aslr. Can't predict. Tried running it 10 times and it jumped to random addresses each time. The address of my shell code also is dependent on where this stuff is loaded.
+- Can't find a jmp sp instruction on stack. If I could, I could set the return address to point there and that would jump to my stack pointer, where my shell code will be.
+- Code doesn't contain anything I can jump to already. Mostly have to write my own code...which I can..but dunno the address.
+- User input is written only in that 1 place above where the address loads.
+- Can't find any locations which are static either like bss or data like all the books/papers talk about.

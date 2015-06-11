@@ -1,0 +1,13 @@
+- Its a good idea to familiarize yourself with basic debugging concepts before you start any of the following levels
+- Things start getting harder now :)
+- Of course, study the flow - see enc() and then call 0x2400()?
+- What do you think enc() does? By name it sounds like its encrypting something...but what? and what's it doing with the encrypted text?
+- Its a good idea to casually look at what addresses different assembly instructions inside enc read/write from/to ... that gives you a hint
+- And where's 2400? in the assembly...anyway? :-o .. but yet the program runs?
+- Here's a quick hint. If you ever got infected by a virus...which never copied itself onto your disk..and vanished when you rebooted... where is it executing
+  from?
+- And if you wanted to find out...what it was doing... what would you do? How do you do it?
+- Also I'd start learning the use of this page - https://microcorruption.com/assembler .. play with it and see what it does. Could it be helpful in this level? :)
+- If you answer all of the above, you'll be very close...and then again... answer one of our older questions - where does our input go? which instruction
+  uses it? How?
+- NOW, you'll definitely get the answer .. if not, don't worry - stick at it :)

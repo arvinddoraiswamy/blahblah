@@ -1,0 +1,24 @@
+- ret to overwrite is at 4440
+- no code I can jump to inside the program, mostly another push 7f, call INT code
+- calls setup_protection, then login and then rets at 4440 and then exits the program
+- setup_protection marks pages writeable/executable, turns on dep which will make the stack non executable
+- login takes input of 0x30, prints the input and returns to 4440
+- some input of <= 48 needs to be given which will overwrite 4440 with the address of my shell code which must start with 30127f00b012
+- mark_page_writeable takes 1 as an argument and mark_page_executable takes 0 as an argument. Everything else is the same.
+- 1st 44 pages are set as writeable (0-43). 0x9100 moved into sr marks pages as writeable or executable.
+- Pages 44-ff are all marked as executable. 0x9000 moved into sr turns dep on.
+- Lastly DEP is turned on. This means pages can either be writeable or executable, not both.
+- Password is always wrong. Heh.
+- 18 bytes of input overwrite ret. 414243444546474849505152535455565758 overwrites ret at 5758.
+- Shell code needs to be inside 16 bytes. It starts at 3fee. Maybe I'll overwrite ret with 3fee and try. Something's going to break for sure. What and how I dunno :D
+- Trying shell code of 30127f00b01241414141414141414141b644. This should at least make it jump to 3fee.
+- It jumps alright and causes a Segmentation fault. can-not execute write-only page. So 3fee for whatever reason is a write-only page. Maybe its just 3f that was used earlier when mark_page_writeable was called. We need to do something and make that executable.
+- I can't add any shell code there as that's also going to try and execute. I need to go to a page which is already executable and pass it the argument of the page I want to make executable. 3fee in this case because that has my shell code.
+- Cant jump to writeable or executable routines and try and mark the writeable pages executable and viceversa
+- Calling turn_on_dep twice doesn't reset it :D
+- Its NOT turning 3fee to executable coz then code wont be able to write there
+- I can execute code from page 44 onwards, so I need to call somewhere into that for sure. But where?
+
+- This works :41414141414141414141414141414141ba443f000000ee3f. Jumps to 44ba, adjusts the stack, sets page 3f to executable, jumps to 3fee. All I need to do is to find out how to call INT with 7f now.
+
+- 324000ffb01210004141414141414141ba443f000000ee3f works. You look at INT in a previous level. INT 7f maps to ff00. Get ff00 into sr and then call INT. All good. 3 levels to go :)

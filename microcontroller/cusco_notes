@@ -1,0 +1,9 @@
+- You had hard coded passwords in code, then you had conditional jumps based on a single byte input
+- This time, it might be a bit harder :)
+- What instruction executes..rather..what address does the program go to normally, once login returns?
+- Think of a classic buffer overflow, what do you do to actually exploit it?  I'll give you a hint... you overwrite some part of memory.
+- But why? Why do I overwrite? I'd do some reading if that bit is still not clear :)
+- Once that's clear, what's the end aim of THIS program?
+- Where are those bits actually implemented?
+- How are they called? Can you decide how to call them?
+- Anything more, and I'll give it all away ;)

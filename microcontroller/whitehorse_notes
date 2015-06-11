@@ -1,0 +1,10 @@
+- No unlock door, must find some new location to jump to
+- Replaced by conditional_unlock_door at 4446
+- main() - login() - getsn() takes password - unconditional_jump()
+- entered password at 33f4
+- 33ee flushed to 0. Looks like cusco and johannesburg so far.
+- INT 7e. No unlock door as 7e triggers unlock door automatically. So as long as I can set 33ee to a non zero number I'm good.
+- 1c45 goes to access granted and 33ee is also 0a but er.. door doesn't unlock :( [414243444546474849505152535455561c45]
+- called conditional_unlock but reg values are all zero so that's a fail again :(
+- calling int 7e directly with stack arguments as before also fails - probably obviously since the password is wrong
+- calling 7f directly to see if that'll trigger an unlock directly (WooHooWooHoo :) :))

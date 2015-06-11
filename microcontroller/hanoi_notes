@@ -1,0 +1,6 @@
+- No more finding passwords stored in assembly :)
+- So now what? Guess the password? Or...something else?
+- What does login do?
+- Are there any functions that are similar across levels? How do you handle those?
+- Where does your user input go? Where does it end?
+- What is the code checking to confirm that your input is correct?

