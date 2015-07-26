@@ -1,0 +1,25 @@
+- lets say 13 byte random (different each time) prepended as discussed before
+
+Lets try and guess first byte of target text like in chal 12:
+- for that we need to use 18 A's as chosen plain text.
+- Why 18? we don't want to guess the first block for sure as that's going to be random junk every time. First block has <13 random><3 A>. We ignore this.
+- 2nd block has 15 A's and then the first char of the target block; lets say X.. so <15 A><X> is block 2. We want to apply logic of chal 12 to block 2
+- block 1 and block 2 are both now encrypted and come back. We save this - (R1)
+- Now we need to generate the ASCII dictionary so we compare R1 against all of it and find a match, just like in chal 12
+- The change this time though, is that we get a new random 13 char string *256* times for the whole alphabet (R2).
+- And none of them(R2[0] to R2[255]) will ever (for simplicity) match R1 if we compare the whole string, because block 0 *will always* be different from that of R1
+
+- BUT it's ECB rt. So each block is independently encrypted. Meaning Block 2 for 1 of the R2 values *should* still match Block 2 of R1
+- And Block 3.. and so on. Till we finish up.
+
+- Meaning instead of like in chal 12 where we were doing stuff in a loop like.... 
+	for ascii(0 to 256):
+		if r1[0:16] == r2[0:16]
+			print 'match detected'
+		
+- .... we'll have to go...
+	for ascii(0 to 256):
+		if r1[16:32] == r2[16:32]
+			print 'match detected'
+
+- Make sense? And this works too :)

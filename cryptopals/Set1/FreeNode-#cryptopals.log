@@ -1,0 +1,574 @@
+**** BEGIN LOGGING AT Mon Apr 27 12:16:53 2015
+
+Apr 27 12:17:57 *	PaulCapestany has quit (Ping timeout: 256 seconds)
+Apr 27 12:26:45 *	PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+Apr 27 12:29:18 *	PaulCape_ has quit (Ping timeout: 256 seconds)
+Apr 27 12:40:13 *	PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+Apr 27 12:42:53 *	PaulCapestany has quit (Ping timeout: 256 seconds)
+Apr 27 12:45:21 *	PaulCape_ has quit (Max SendQ exceeded)
+Apr 27 12:46:20 *	PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+Apr 27 13:02:46 *	SomeKittens (uid27802@gateway/web/irccloud.com/x-iavooivyogolfxnv) has joined #cryptopals
+Apr 27 13:08:44 *	PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+Apr 27 13:11:13 *	PaulCapestany has quit (Ping timeout: 256 seconds)
+Apr 27 13:20:22 *	PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+Apr 27 13:22:45 *	PaulCape_ has quit (Ping timeout: 252 seconds)
+Apr 27 13:35:15 *	PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+Apr 27 13:37:51 *	PaulCapestany has quit (Ping timeout: 256 seconds)
+Apr 27 13:49:10 *	PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+Apr 27 13:50:58 *	PaulCape_ has quit (Ping timeout: 264 seconds)
+Apr 27 14:02:15 *	PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+Apr 27 14:04:29 *	PaulCapestany has quit (Ping timeout: 256 seconds)
+Apr 27 14:13:19 *	PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+Apr 27 14:15:39 *	PaulCape_ has quit (Ping timeout: 245 seconds)
+Apr 27 14:17:54 *	PaulCapestany has quit (Max SendQ exceeded)
+Apr 27 14:18:55 *	PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+Apr 27 14:36:43 *	PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+Apr 27 14:39:37 *	PaulCapestany has quit (Ping timeout: 256 seconds)
+Apr 27 14:47:18 *	xmgv (~maxi@unaffiliated/plist) has joined #cryptopals
+Apr 27 16:33:06 *	Torun has quit (Quit: Leaving)
+Apr 27 17:07:07 Tcl interface unloaded
+Apr 27 17:07:07 Python interface unloaded
+Apr 27 17:07:07 Messaging Indicator 0.3.11 plugin unloaded.
+**** ENDING LOGGING AT Mon Apr 27 17:07:07 2015
+
+**** BEGIN LOGGING AT Tue Apr 28 01:43:50 2015
+
+Apr 28 01:43:50 *	Now talking on #cryptopals
+Apr 28 01:43:50 *	Topic for #cryptopals is: Unofficial cryptopals.com discussion
+Apr 28 01:43:50 *	Topic for #cryptopals set by titanous at Tue Aug 12 12:53:13 2014
+Apr 28 01:58:12 *	kjn (~kjn@24-136-26-109.c3-0.lem-ubr2.chi-lem.il.cable.rcn.com) has joined #cryptopals
+Apr 28 02:03:06 *	bren2010 has quit (Ping timeout: 276 seconds)
+Apr 28 02:10:15 *	bren2010 (~bren2010@unaffiliated/bren2010) has joined #cryptopals
+Apr 28 02:20:27 <lde>	hey...in set 1 (challenge 6) what does this bit mean?
+Apr 28 02:20:33 <lde>	"For each block, the single-byte XOR key that produces the best looking histogram..."
+Apr 28 02:20:37 <lde>	---------
+Apr 28 02:21:12 <lde>	do i need to do frequency analysis on each XOR result?
+Apr 28 02:53:33 *	Disconnected (Connection timed out).
+**** ENDING LOGGING AT Tue Apr 28 02:53:33 2015
+
+**** BEGIN LOGGING AT Tue Apr 28 02:54:00 2015
+
+Apr 28 02:54:00 *	Now talking on #cryptopals
+Apr 28 02:54:00 *	Topic for #cryptopals is: Unofficial cryptopals.com discussion
+Apr 28 02:54:00 *	Topic for #cryptopals set by titanous at Tue Aug 12 12:53:13 2014
+Apr 28 03:01:37 *	kjn has quit (Quit: I was quit when I came in here. I'm twice as quit now.)
+Apr 28 11:54:12 <lde>	anyone around to help a bit?
+Apr 28 11:55:08 *	Disconnected (Invalid argument).
+**** ENDING LOGGING AT Tue Apr 28 11:55:08 2015
+
+**** BEGIN LOGGING AT Tue Apr 28 11:55:34 2015
+
+Apr 28 11:55:34 *	Now talking on #cryptopals
+Apr 28 11:55:34 *	Topic for #cryptopals is: Unofficial cryptopals.com discussion
+Apr 28 11:55:34 *	Topic for #cryptopals set by titanous at Tue Aug 12 12:53:13 2014
+Apr 28 11:56:53 <lde>	anyone around to help a bit?
+Apr 28 11:57:15 *	kjn (~kjn@24-136-26-109.c3-0.lem-ubr2.chi-lem.il.cable.rcn.com) has joined #cryptopals
+Apr 28 11:57:40 <Rami`>	sup
+Apr 28 11:57:44 <Rami`>	for another 30 mins or so
+Apr 28 11:57:50 <lde>	hey
+Apr 28 11:58:02 <lde>	so...challenge 6
+Apr 28 11:58:03 <lde>	set 1
+Apr 28 11:58:10 <lde>	i had a couple of quests
+Apr 28 11:59:18 <lde>	with 1 sample per keylength i get a different hamming distance
+Apr 28 11:59:35 <lde>	but there are statements which say to "average" things out
+Apr 28 11:59:45 <Rami`>	right
+Apr 28 11:59:50 *	Rami` goes to look at challenge desc
+Apr 28 12:00:06 <lde>	so i took 4 samples per keylength
+Apr 28 12:00:24 <Rami`>	aha
+Apr 28 12:00:26 <lde>	and get say 4 hamming distances 
+Apr 28 12:00:31 <lde>	and div/4
+Apr 28 12:00:38 <lde>	is that logic even right?
+Apr 28 12:01:18 <Rami`>	just finding my function for it
+Apr 28 12:01:42 <lde>	k..
+Apr 28 12:01:43 <Rami`>	you basically want a function to derive the key_size
+Apr 28 12:02:02 <lde>	can I pm you a link to my code?
+Apr 28 12:02:22 <Rami`>	sure
+Apr 28 12:03:50 <lde>	done, just probably quicker than me trying to describe what i did
+Apr 28 12:03:52 <lde>	:)
+Apr 28 12:04:33 <Rami`>	right
+Apr 28 12:04:35 <Rami`>	lets have a peek
+Apr 28 12:04:45 <lde>	thx
+Apr 28 12:05:22 <kjn>	i seem to remember with that challenge needing to take more averages than they suggest and looking at more key candidates than they suggest
+Apr 28 12:05:30 <kjn>	though it's been a while since i've done it
+Apr 28 12:05:45 <Rami`>	right, so you;re on the right track
+Apr 28 12:06:22 <Rami`>	you're taking your buffer, then for each candidate key size
+Apr 28 12:06:30 <Rami`>	rightly limited from 2 to 48
+Apr 28 12:06:36 <Rami`>	you  want to take a set of samples
+Apr 28 12:07:08 <lde>	kjn: thanks. Yeah, I am very poor at crypto, so prolly need help as I go along :)
+Apr 28 12:07:23 <Rami`>	that means if you're taking X samples, you take X slices of keysize-sized chunks from your buffer
+Apr 28 12:07:29 <lde>	correct
+Apr 28 12:07:53 <Rami`>	you're taking 2 at a minimum since you seem to be doing +1
+Apr 28 12:07:58 <lde>	correct
+Apr 28 12:08:01 <Rami`>	let me tell you, you want at least 6 samples
+Apr 28 12:08:03 <Rami`>	now
+Apr 28 12:08:09 <lde>	ah okay, that's easily fixed
+Apr 28 12:08:14 <Rami`>	when you compare samples and get hamming distance
+Apr 28 12:08:16 <Rami`>	you are doing this
+Apr 28 12:08:16 <lde>	rt
+Apr 28 12:09:10 <Rami`>	for sample set [A, B, C], you do: hamming (A, B), hamming (B, C)
+Apr 28 12:09:12 <Rami`>	stop
+Apr 28 12:09:17 <lde>	rt
+Apr 28 12:09:24 <Rami`>	so you get 2 hammings for a set of 3, 1 hamming for a set of 2
+Apr 28 12:09:29 <Rami`>	i.e. n-1 hamming scores
+Apr 28 12:09:29 <lde>	correct
+Apr 28 12:09:39 <Rami`>	you don't want permutations
+Apr 28 12:09:41 <Rami`>	you want combinations
+Apr 28 12:09:59 <Rami`>	for A, B, C you want: hamming(A, B), hamming(A, C), hamming(B, C)
+Apr 28 12:10:08 <lde>	okay got it, will fix that
+Apr 28 12:10:36 <Rami`>	just sum the hamming scores, then take average (so divide by number of measurements you took)
+Apr 28 12:10:59 <Rami`>	then just keep track of your lowest outcome
+Apr 28 12:10:59 <lde>	right, i was doing that - wasnt sure if the logic was rt
+Apr 28 12:11:01 <Rami`>	and that's your winner
+Apr 28 12:11:06 <lde>	just with 4 samples
+Apr 28 12:11:19 <Rami`>	yeah, even 6 samples with permutations
+Apr 28 12:11:22 <Rami`>	isn't good enough
+Apr 28 12:11:25 <Rami`>	you need 6 and combinations
+Apr 28 12:11:39 <Rami`>	it's the combination requirement people get hung up on
+Apr 28 12:11:45 <lde>	when i took top 5 then iirc i got keylen - [2,529,10,31] or something
+Apr 28 12:11:54 <lde>	sorry [2,5,29,10,31]
+Apr 28 12:12:21 <lde>	whats the logic of the *combinations* though? why do we do it?
+Apr 28 12:13:02 <Rami`>	well you want to test each sample against ALL the other samples right
+Apr 28 12:13:09 <Rami`>	the samples are independent for our purposes
+Apr 28 12:13:15 <kjn>	i didn't do combinations in my solution
+Apr 28 12:13:24 <Rami`>	then you probably needed a lot more samples?
+Apr 28 12:14:10 <Rami`>	for samples A, B, C and D, comparing A to B is just as valid as comparing A to D, so you should do all of them
+Apr 28 12:14:13 <kjn>	for each key length, i took the average of 4 edit distances
+Apr 28 12:14:26 <lde>	okay will do
+Apr 28 12:14:32 <Rami`>	well the exercise might be simple enough to still get the answer
+Apr 28 12:14:37 <kjn>	then i attempted to crack the ciphertext using the 5 shortest averages
+Apr 28 12:14:42 <Rami`>	I was under the impression that it gave the wrong answer
+Apr 28 12:14:44 <Rami`>	ah
+Apr 28 12:15:21 <Rami`>	well this test is small enough to still catch it but with combination approach you can nail the right key length every time
+Apr 28 12:15:22 <kjn>	well, more accurately, whatever key lengths resulted in the 5 shortest averages
+Apr 28 12:15:46 <lde>	so is it always...more samples --> better accuracy?
+Apr 28 12:15:57 <Rami`>	yes
+Apr 28 12:16:19 <kjn>	well, it seems to be. i don't know if that's a proven thing though
+Apr 28 12:16:27 <lde>	k..
+Apr 28 12:16:36 <kjn>	and i don't know what the magic number of samples is either
+Apr 28 12:17:03 <kjn>	i remeber playing around with it for a while and the correct key length won't always be in the top 5, even as you consider more samples
+Apr 28 12:17:34 <kjn>	but since it was just an exercise, i stopped when i got the right answer :)
+Apr 28 12:18:00 <lde>	couple more quests though.. whats the logic of sort by *smallest* hamming? Is it because the smaller the hamming, the more it is likely you have the rt keylength?
+Apr 28 12:19:46 <kjn>	well, the challenge specifically says that. as for the reasoning, it doesn't explain why
+Apr 28 12:20:11 <lde>	right, i just wondered why that's all (cryptographically i mean)
+Apr 28 12:20:27 <kjn>	i assume it has something to do with the interplay between letter frequencies and word boundaries
+Apr 28 12:20:56 <lde>	okay
+Apr 28 12:21:02 <kjn>	and how that lines up with your block size
+Apr 28 12:21:12 <kjn>	but don't quote me on that :)
+Apr 28 12:21:15 <lde>	:)
+Apr 28 12:21:50 <lde>	the only other quest i had was on the last step...what's a histogram they talk about? Is it just... do the ETAION thing on the result of every XOR?
+Apr 28 12:22:10 <lde>	frequency analysis i mean
+Apr 28 12:22:15 <lde>	of letters
+Apr 28 12:22:25 <kjn>	so in challenge 3, you're suppose to devise a method to automatically determine if you have plaintext
+Apr 28 12:22:36 <lde>	yep have that code
+Apr 28 12:23:14 <kjn>	so you need to use that in challenge 6
+Apr 28 12:23:34 <kjn>	remember, you're going to be trying multiple keys, so you need a way to determine which one is right
+Apr 28 12:23:50 <lde>	yep, all good so far
+Apr 28 12:24:02 <kjn>	so that's all they're referring to by "histogram"
+Apr 28 12:24:08 <lde>	hmm intersting
+Apr 28 12:24:22 <lde>	i got large bunches of "unreadable" ascii throughout
+Apr 28 12:24:31 <lde>	like no proper english anywhere
+Apr 28 12:24:50 <lde>	which got me thinking if i had misinterpreted
+Apr 28 12:25:02 <kjn>	yeah. that would mean you didn't crack the ciphertext :)
+Apr 28 12:25:13 <lde>	lol thats what i feared :)
+Apr 28 12:25:51 <lde>	okay let me go back and try
+Apr 28 12:26:16 <Rami`>	re: smallest
+Apr 28 12:29:09 <Rami`>	english language is a subset of the total ASCII range
+Apr 28 12:29:19 <kjn>	reading back ... yead, lde. by histogram, they just mean the frequency analysis you presumably came up with for challenge 3
+Apr 28 12:29:27 <Rami`>	so statistically speaking hamming distances between 2 chunks of english (even encrypted)
+Apr 28 12:29:31 <Rami`>	will be closer together
+Apr 28 12:29:36 <Rami`>	than two random strings of gibberish
+Apr 28 12:30:03 <Rami`>	since random gibberish will include bytes that are way outside of the ascii range
+Apr 28 12:30:12 <Rami`>	so the hamming distance on those will be much higher
+Apr 28 12:30:34 <Rami`>	of course, you might just randomly get 2 high bytes to compare and their hamming distance is low
+Apr 28 12:30:36 <lde>	kjn: thanks
+Apr 28 12:30:38 <Rami`>	but that's why you take a LOT of samples
+Apr 28 12:30:46 <Rami`>	to remove that noise
+Apr 28 12:31:08 <lde>	ah okay got it now
+Apr 28 12:31:19 <lde>	so its because of *English*
+Apr 28 12:31:33 <Rami`>	well any language really
+Apr 28 12:31:44 <Rami`>	our alphabet only has 26 letters
+Apr 28 12:31:46 <lde>	correct
+Apr 28 12:31:52 <Rami`>	and our byte values can be 0-255
+Apr 28 12:31:55 <Rami`>	so..
+Apr 28 12:32:49 <lde>	cool got it, thanks
+Apr 28 12:33:03 <lde>	i'll go try this again
+Apr 28 12:35:20 <kjn>	i should start poking around with these again. i only got through the first two sets
+Apr 28 12:37:12 <lde>	kjn: gl
+Apr 28 12:37:44 <lde>	and are the links to solutions broken on the site? they never seem to work for me
+Apr 28 12:38:01 <kjn>	if you get through the second set, you'll understand exactly how the POODLE attack on SSL worked
+Apr 28 12:38:10 <kjn>	yup
+Apr 28 12:38:39 <kjn>	you can find people's solutions though, if your persistent enough with the googles
+Apr 28 12:38:49 <kjn>	*you're
+Apr 28 12:38:51 <lde>	ooh nice...i hope to get through this one quick, stuck on it for ages lol
+Apr 28 12:38:54 <Rami`>	afk here
+Apr 28 12:39:00 <lde>	thnx Rami`
+Apr 28 12:39:10 <Rami`>	don't peek at solutions ;) ask pointers and we'll try our best
+Apr 28 12:39:15 <lde>	:)
+Apr 28 12:39:28 <lde>	i tried to look once... but it confused me more - so i came here
+Apr 28 12:39:30 <lde>	:)
+Apr 28 12:39:39 <lde>	and this is much much nicer
+Apr 28 12:39:46 <kjn>	yeah, i only did that to try and make sure i understood what the question is asking
+Apr 28 12:40:01 <kjn>	once i found this channel, you really don't need to look for solutions anymore
+Apr 28 12:40:05 <lde>	right, this prob for eg..steps 3 and 4 are super confusing
+Apr 28 12:40:05 <kjn>	at least imo
+Apr 28 12:40:07 <kjn>	:)
+Apr 28 12:40:08 <lde>	i agree
+Apr 28 12:41:30 <lde>	i would say the 2nd part of Step 4 for this, should really be part of Step 3
+Apr 28 12:41:36 <lde>	that's what threw me off the most
+Apr 28 12:42:36 <kjn>	yeah, i remember thinking challenge 6 could have been worded a little better
+Apr 28 12:43:15 <kjn>	i got stuck for a while simply because i wasn't looking at enough keys or considering enough edit distances
+Apr 28 12:43:24 <kjn>	but i was otherwise on the right track
+Apr 28 12:43:50 <lde>	thats cool
+Apr 28 12:44:08 *	SomeKittens (uid27802@gateway/web/irccloud.com/x-sgglywyjlqvzwcly) has joined #cryptopals
+Apr 28 12:44:13 <Rami`>	if you get stuck on things just put some Qs here, this client is always online
+Apr 28 12:44:15 <kjn>	i didn't know that though until i found somebody else's solution and saw that that's what they were doing
+Apr 28 12:44:17 <Rami`>	so can always pick it up later
+Apr 28 12:44:23 <Rami`>	now I'm really off, train to catch lol
+Apr 28 12:44:26 <lde>	lol
+Apr 28 12:44:29 <lde>	cya :)
+Apr 28 12:44:59 <lde>	i mean, in the end - imo - as long as u know you're honestly learning, its fine, whatever path you choose
+Apr 28 12:45:13 <kjn>	well, that was before i found this channel, like i said
+Apr 28 12:45:20 <lde>	true
+Apr 28 12:45:23 <kjn>	i would've just asked in here
+Apr 28 12:46:04 <lde>	yeah nicer
+Apr 28 12:47:58 <kjn>	like, i didn't think challenge 14 was very clear either. i came in here for that one though
+Apr 28 12:57:29 *	jjarmoc (~jjarmoc@unaffiliated/jjarmoc) has joined #cryptopals
+Apr 28 12:57:53 <lde>	i'll keep that in mind
+Apr 28 12:57:55 <lde>	:)
+Apr 28 13:02:38 <SomeKittens>	Yeah, needed help with #14
+Apr 28 13:02:50 <SomeKittens>	turns out it was the *same* random prefix every time
+Apr 28 13:03:59 <kjn>	yup, that's exactly what tripped me up
+Apr 28 13:04:06 <kjn>	makes the problem SIGNIFICANTLY easier
+Apr 28 13:23:59 *	jjarmoc has quit (Ping timeout: 264 seconds)
+Apr 28 13:25:45 <SomeKittens>	which is kind of the point of cryptopals
+Apr 28 13:26:03 <SomeKittens>	this isn't something where you can just follow the instructions *really well* and win
+Apr 28 13:33:08 <lde>	on a tangent though, all these crypto attacks that keep happening, like BEAST and CRIME and POODLE and whatever tomorrow.... have there really been anyone actually using them to exploit stuff?
+Apr 28 13:34:03 <lde>	sure , we should fix and all that (which is what I tell my clients too), but does anyone really exploit them in the wild?
+Apr 28 13:55:14 <SomeKittens>	lde: yes, very yes
+Apr 28 13:55:31 <SomeKittens>	mostly botnets picking up more members
+Apr 28 13:57:02 <lde>	cool thnx
+Apr 28 13:58:10 <lde>	just seems that there'd be so many easier ways to screw someone/some company than say, a downgrade SSL attack which is significantly more complex
+Apr 28 13:58:14 <lde>	that was my thought
+Apr 28 14:25:32 <SomeKittens>	once you've implemented it, you can stick it in a for loop
+Apr 28 14:28:40 <lde>	true
+Apr 28 14:36:05 <kjn>	Heartbleed, which people at first didn't think could be practically exploited, was used to compromise some VPN keys and hack into the network of a health insurance company
+Apr 28 14:36:26 <kjn>	some 4.5 million people's records were compromised
+Apr 28 14:41:39 <lde>	kjn: true. I'm not questioning it cant be done at all. More that, attacking *via* crypto seems more difficult than stealing off a sticky pad
+Apr 28 14:41:45 <lde>	hence the thought
+Apr 28 14:47:19 *	jjarmoc (~jjarmoc@unaffiliated/jjarmoc) has joined #cryptopals
+Apr 28 15:28:21 *	kjn has quit (Quit: I was quit when I came in here. I'm twice as quit now.)
+Apr 28 15:44:19 *	jjarmoc has quit (Ping timeout: 244 seconds)
+Apr 28 15:48:45 *	sheilong (~felipe@unaffiliated/sheilong) has joined #cryptopals
+Apr 28 15:53:54 *	Torun (~TorunR@unaffiliated/torunr) has joined #cryptopals
+Apr 28 15:56:20 *	Torun has quit (Client Quit)
+Apr 28 15:59:10 *	jjarmoc (~jjarmoc@unaffiliated/jjarmoc) has joined #cryptopals
+Apr 28 16:04:43 <cpach>	nice to see some activity here :)
+Apr 28 16:17:41 <bnagy>	SomeKittens: 14 is doable with random length new prefix on every call to the oracle
+Apr 28 16:18:43 <bnagy>	I just did it that way and only realised way later ( people often ask about that here ) that there was another way to read it :(
+Apr 28 16:19:38 <SomeKittens>	bnagy: Yeah, I spent a while on that before finding out the other way
+Apr 28 16:19:54 <SomeKittens>	though I doubt Matasano will touch it
+Apr 28 16:20:04 <bnagy>	eh?
+Apr 28 16:20:18 <bnagy>	don't you need to deal with variable lengths in the same set?
+Apr 28 16:20:39 <SomeKittens>	I spent a while on the always-new random prefix
+Apr 28 16:20:54 <sheilong>	What kind of math is needed to do the challenges ?
+Apr 28 16:21:04 <bnagy>	sheilong: high school
+Apr 28 16:21:24 <bnagy>	early high school, tbh
+Apr 28 16:21:45 <bnagy>	SomeKittens: the random length new prefix approach is just a trick, it's not "hard" at all
+Apr 28 16:22:03 <bnagy>	just a 'once you see it' thing
+Apr 28 16:22:09 *	SomeKittens is not good at those
+Apr 28 16:22:32 <bnagy>	now that I am looking, maybe they _didn't_ make you deal with random lengths afterwards o_0
+Apr 28 16:22:36 *	bnagy flips through solutions
+Apr 28 16:24:13 <sheilong>	bnagy:  Cool, thanks for answer
+Apr 28 16:26:12 <bnagy>	some of the stuff you are working in finite fields but you don't need to know that
+Apr 28 16:26:35 <bnagy>	basic algebra and how knowing how modulus works should be enough
+Apr 28 16:27:04 <bnagy>	and reading notation right at the very very end
+Apr 28 16:30:12 <sheilong>	scientific notation you mean ?
+Apr 28 16:30:23 <bnagy>	mathematical notation
+Apr 28 16:30:43 <bnagy>	squiggly greek letters and such
+Apr 28 16:31:01 <bnagy>	but only to read one paper
+Apr 28 16:32:27 <jjarmoc>	that’s pretty far in.. if you make it that far you’re well ahead of the curve
+Apr 28 16:33:26 <sheilong>	ok
+Apr 28 16:35:23 <SomeKittens>	jjarmoc: any idea what the curve looks like?
+Apr 28 16:35:36 <jjarmoc>	I knew someone was going to ask that...
+Apr 28 16:35:53 <jjarmoc>	I don’t have the actual data, and now that it’s not tracked via email, there really is no new data coming it
+Apr 28 16:35:56 <jjarmoc>	s/it/in/
+Apr 28 16:36:22 <bnagy>	when I finished I think there were <30 finished and thousands of starts
+Apr 28 16:36:30 <jjarmoc>	but anecdotally, I think there was a large number of people who did set 1, and a pretty decent drop off around 5-6…
+Apr 28 16:36:38 <jjarmoc>	that sounds about right
+Apr 28 16:36:46 <bnagy>	but the taper from 1-3 was brutal
+Apr 28 16:37:06 <bnagy>	6 tapered again from like couple hundred to not-many
+Apr 28 16:37:08 <jjarmoc>	yah, the early levels lose a lot of folks who are just curious, but turn out to not want to spend time on it
+Apr 28 16:38:03 <jjarmoc>	Honestly, I haven’t completed the last sets :)
+Apr 28 16:38:17 <bnagy>	I am still waiting for the EC set
+Apr 28 16:38:42 <bnagy>	tqbf sent me a message about whom to annoy but then I got busy with a project
+Apr 28 16:39:02 <jjarmoc>	last I heard, that was still being worked on...
+Apr 28 16:39:17 <jjarmoc>	the Crypto services guys have been a little busy lately
+Apr 28 16:39:25 <jjarmoc>	Truecrypt, OpenSSL, Blackhat training, etc…
+Apr 28 16:39:31 <bnagy>	intolerable
+Apr 28 16:39:34 <jjarmoc>	lol
+Apr 28 16:40:32 <bnagy>	how many in that group now?
+Apr 28 16:40:48 <SomeKittens>	Yeah, I signed up for it but never even tried #1
+Apr 28 16:40:55 <SomeKittens>	(back when the email was a thing)
+Apr 28 16:50:50 *	jjarmoc has quit (Ping timeout: 256 seconds)
+Apr 28 16:59:34 *	jjarmoc (~jjarmoc@unaffiliated/jjarmoc) has joined #cryptopals
+Apr 28 17:18:34 <jjarmoc>	bnagy: I’m not sure if I can say, and I may not have complete info anyhow.. tend to know the folks in geographic proximity to me the best :)
+Apr 28 17:24:35 <bnagy>	:>
+Apr 28 17:30:33 *	jjarmoc has quit (Ping timeout: 250 seconds)
+Apr 28 18:02:55 *	sheilong has quit (Quit: Konversation terminated!)
+Apr 28 18:40:55 *	kjn (~kjn@24-136-26-109.c3-0.lem-ubr2.chi-lem.il.cable.rcn.com) has joined #cryptopals
+Apr 28 22:13:48 *	sheilong (~felipe@unaffiliated/sheilong) has joined #cryptopals
+Apr 28 23:05:59 <SomeKittens>	Alright, hacking on #16
+Apr 28 23:06:06 <SomeKittens>	time for some rubber ducking
+Apr 28 23:06:42 <SomeKittens>	so I'm xoring 'admin=true;aaaaa' and 'aaaaaaaaaaaaaaaa' to get what I need to stick into the ciphertext
+Apr 28 23:07:40 <SomeKittens>	but it's coming out as 'aaaaaaaaaaaaaaaa', not  'admin=true;aaaaa'
+Apr 28 23:10:29 <SomeKittens>	https://twitter.com/Pinboard/status/593250595340886016
+Apr 28 23:10:35 <SomeKittens>	whoops, wrong channel
+Apr 28 23:11:06 <SomeKittens>	What *should* be happening (to my knowledge):
+Apr 28 23:11:44 <SomeKittens>	I corrupt chunk A with data that when XOR'd with the plaintext in chunk B, results in admin=true
+Apr 28 23:12:21 <SomeKittens>	so I should get gibberish for decrypted chunk A
+Apr 28 23:13:55 <SomeKittens>	but decrypted chunk B, when XOR'd with chunk A's ciphertext, should result in the admin=true payload.
+Apr 28 23:28:13 <kjn>	i'm not sure about a couple of your statements there, so let's just walk through this
+Apr 28 23:28:17 <kjn>	here's what CBC is doing:
+Apr 28 23:28:31 <kjn>	block A ciphertext XOR block B plaintext = block B'. Block B' is then encrypted to get block B ciphertext
+Apr 28 23:28:56 <kjn>	so in reverse: block B' XOR block A ciphertext = block B plaintext
+Apr 28 23:29:29 <kjn>	with me?
+Apr 28 23:29:58 <kjn>	SomeKittens: with me?
+Apr 28 23:30:37 <SomeKittens>	yeah
+Apr 28 23:31:53 <kjn>	ok. so you don't know block B', but you can recreate it
+Apr 28 23:32:09 <kjn>	see how?
+Apr 28 23:33:54 <kjn>	once you have that, then you can create any block A "ciphertext" to get any block B plaintext of your choosing
+Apr 28 23:35:13 <SomeKittens>	"But you can recreate it" <- not sure what you mean
+Apr 28 23:37:11 <kjn>	remember, they have you write a function that accepts plaintext of your choosing, then you get ciphertext back
+Apr 28 23:37:29 <kjn>	so you know the plaintext you put in, and you know the ciphertext you get out
+Apr 28 23:37:50 <kjn>	and if you know any two elements of that equation, you can get the third
+Apr 28 23:38:52 <kjn>	did that make it any clearer?
+Apr 28 23:39:44 <SomeKittens>	That's where I thought I was
+Apr 28 23:40:27 <SomeKittens>	sorry for my ineptitude - I'm not very good at this
+Apr 28 23:41:05 <kjn>	No, this can be tricky
+Apr 28 23:41:57 *	SomeKittens reviews the CBC diagram on Wikipedia
+Apr 28 23:42:26 <SomeKittens>	kjn: no kidding, some of this stuff is really tricky.  And I'm only on #16!
+Apr 28 23:42:35 <SomeKittens>	still waaaay better than "Hey, move this modal over there" of dayjob
+Apr 28 23:43:19 <kjn>	Heh
+Apr 28 23:44:18 <lde>	SomeKittens: cheer up, you're working at it as best you can :) - not that i'm very better frankly, probably worse
+Apr 28 23:44:32 <SomeKittens>	lde: you'll probably catch up to me soon
+Apr 28 23:44:41 <kjn>	I'm trying to think how better to explain it. :/
+Apr 28 23:44:50 <kjn>	SomeKittens | "But you can recreate it" <- not sure what you mean
+Apr 28 23:45:06 <kjn>	What are you confused about there?
+Apr 28 23:47:42 <SomeKittens>	I don't know block B' (post XOR, but pre encryption).
+Apr 28 23:48:04 <SomeKittens>	but I can recreate it via XORing the crypted data (which I have) and the plaintext (which I injected).
+Apr 28 23:48:09 <SomeKittens>	welp, answered my own question.
+Apr 28 23:48:16 <kjn>	yup, exactly
+Apr 28 23:49:14 <kjn>	now you have Block B', and a malicious block B plaintext that you want
+Apr 28 23:49:40 <kjn>	so now you can create a Block A "ciphertext" using that equation i gave you
+Apr 28 23:49:53 <SomeKittens>	ah, ok
+Apr 28 23:49:54 <kjn>	though as you say, Block A will end up being garbled when it's decrypted
+Apr 28 23:51:23 <SomeKittens>	http://assets.amuniversal.com/4c6b3ee0df8f01317256005056a9545d <-- last panel is me right now
+Apr 28 23:52:23 <kjn>	Heh. :-)
+Apr 28 23:52:29 <kjn>	Calvin & Hobbes FTW!
+Apr 28 23:56:12 <kjn>	the tricky thing about #16 is figuring out what to do. implementing it isn't too bad. at least imo
+Apr 28 23:56:51 <SomeKittens>	implementing #14 was painful
+Apr 28 23:57:02 <SomeKittens>	I was off-by-six once you counted up all the off-by-one errors
+Apr 28 23:57:48 <kjn>	heh.
+Apr 28 23:58:03 <kjn>	yeah, after #14, 15 and 16 were a welcome relief
+Apr 28 23:58:22 <kjn>	of course it didn't help me that i first tackled #14 assuming it was random EVERY TIME. argh....
+Apr 28 23:58:49 <SomeKittens>	seems like we all made that mistake
+Apr 29 00:00:35 <kjn>	i actually got a somewhat working solution, but it would basically crash on me randomly
+Apr 29 00:00:52 <kjn>	once i figured out what was causing that, i was like, "no way is this supposed to be that tough!"
+Apr 29 00:00:59 <kjn>	luckily, that's right about the time i found this channel
+Apr 29 00:01:55 <SomeKittens>	AHA
+Apr 29 00:02:02 <kjn>	what's cool about #14 is that's basically how the POODLE attack works
+Apr 29 00:02:06 <SomeKittens>	yep, figured out where my assumption went wrong
+Apr 29 00:03:13 <SomeKittens>	I was treating decrypted, pre-XOR data as encrypted data
+Apr 29 00:04:16 <kjn>	yeah, that's kind of the big conceptual block on that one
+Apr 29 00:24:56 <SomeKittens>	ok, lost again
+Apr 29 00:27:15 <kjn>	:(
+Apr 29 00:27:37 <SomeKittens>	I can recreate block B', but what good does that do me?
+Apr 29 00:28:44 <SomeKittens>	if I don't know the key
+Apr 29 00:29:08 <kjn>	you don't need to know the key
+Apr 29 00:29:23 <kjn>	remember: A ciphertext XOR B = B'
+Apr 29 00:29:34 <kjn>	if you know any two, you can create the third
+Apr 29 00:30:20 <bnagy>	SomeKittens: you have the right idea
+Apr 29 00:30:35 <SomeKittens>	bnagy: Yeah.  I'm just having trouble putting everything in the right order
+Apr 29 00:31:11 <bnagy>	remember that there are two parts to this problem, the setup and the reveal
+Apr 29 00:31:44 <bnagy>	go through your game plan in plain english, starting as simply as you possibly can
+Apr 29 00:31:47 <SomeKittens>	kjn: but don't I need B ciphertext?
+Apr 29 00:32:13 <kjn>	no. that can't change
+Apr 29 00:32:22 <kjn>	which means B' can't change
+Apr 29 00:32:26 <bnagy>	uh
+Apr 29 00:32:29 <SomeKittens>	bnagy: alright, lemme try
+Apr 29 00:32:35 <bnagy>	this is 16, right?
+Apr 29 00:32:56 <SomeKittens>	I need B plaintext to be admin=true or something like it
+Apr 29 00:33:13 <bnagy>	what's B?
+Apr 29 00:33:25 <SomeKittens>	(this is 16, yes)
+Apr 29 00:33:28 <kjn>	just the blocks
+Apr 29 00:33:32 <kjn>	block a, block b, etc.
+Apr 29 00:33:34 <SomeKittens>	A and B are both blocks under my control
+Apr 29 00:33:45 <kjn>	written another way:
+Apr 29 00:33:52 <SomeKittens>	(specifically, I control the inputs, as well as the ciphertext)
+Apr 29 00:33:54 <kjn>	B' XOR B = A ciphertext
+Apr 29 00:33:58 <bnagy>	kjn: I actually know the answer
+Apr 29 00:34:06 <kjn>	as do i, bnagy
+Apr 29 00:34:10 <bnagy>	I'm being didactic (spoiler)
+Apr 29 00:34:11 <SomeKittens>	bnagy: you've beaten the whole shebang, right?
+Apr 29 00:34:16 <bnagy>	yes
+Apr 29 00:34:43 <kjn>	i'm trying to as well. not that i'm succeeding. :)
+Apr 29 00:34:45 <bnagy>	so your notation is [prefix][A][B][postfix] ?
+Apr 29 00:35:07 <bnagy>	where you control A and B (as well as any other number of blocks you want)
+Apr 29 00:35:32 <bnagy>	so carry on explaining your plan
+Apr 29 00:36:56 <kjn>	trying to be didactic, that is :)
+Apr 29 00:37:50 <SomeKittens>	(I teach at a bootcamp on the side, so I understand just how hard it is to give hints without giving away the answer, really appreciate it from both of you)
+Apr 29 00:39:46 <bnagy>	kjn: btw you can (should imho ;) beat 14 with random prefix of random length each time
+Apr 29 00:40:03 <SomeKittens>	So my plan was to XOR my attack text with the text I handed the encryptor and then replace block A with that
+Apr 29 00:40:26 <bnagy>	SomeKittens: too techy, zoom out
+Apr 29 00:40:30 <SomeKittens>	but that wouldn't work, as B' *isn't* the text I gave the encryptor
+Apr 29 00:40:55 <SomeKittens>	bnagy: hmm
+Apr 29 00:41:09 <kjn>	bnagy: i had a mostly working solution, but it would fail on a particular edge cases
+Apr 29 00:41:18 <bnagy>	high level plan of attack, in two phases
+Apr 29 00:41:30 <SomeKittens>	I can't touch block B (and therefore Block B', as kjn mentioned)
+Apr 29 00:42:07 <bnagy>	ok in my notation B' is the ciphered version of B
+Apr 29 00:42:20 <SomeKittens>	er
+Apr 29 00:42:25 <bnagy>	you can touch it as much as you want
+Apr 29 00:42:38 <SomeKittens>	I've been using B' to mean the decrypted, yet-to-be-XOR'd text
+Apr 29 00:42:50 <SomeKittens>	So for the setup, I need to set A ciphertext to something that XOR's against B' to get the target text
+Apr 29 00:43:29 <kjn>	we've been using B' to refer to B between being XORed with A ciphertext and being encrypted with the key
+Apr 29 00:43:59 <bnagy>	ok
+Apr 29 00:44:04 <bnagy>	let's try not doing that
+Apr 29 00:44:24 <bnagy>	let's say A B and A' (A in the ciphertext) and B'
+Apr 29 00:44:40 <bnagy>	so with that notation tell me what messing with A' does
+Apr 29 00:45:15 <bnagy>	it's just shorter than C(A) or whatever of f(A)
+Apr 29 00:45:19 <SomeKittens>	completely garbles the resulting A plaintext and flips the bits on B
+Apr 29 00:45:33 <bnagy>	ok
+Apr 29 00:46:12 <bnagy>	flips which bits in B?
+Apr 29 00:46:26 <bnagy>	B meaning B plain, obvs
+Apr 29 00:47:02 <SomeKittens>	the bits corresponding to wherever I introduced the "error"
+Apr 29 00:47:23 <bnagy>	k
+Apr 29 00:48:20 <bnagy>	now I am having trouble working out where you're stuck :)
+Apr 29 00:49:29 <SomeKittens>	so if I take encrypted A, and XOR it against plaintext B, I get B', like kjn said.  Then I need to XOR my B' with my target text, and set it the resulting data to A cyphertext
+Apr 29 00:49:36 <SomeKittens>	...that makes sense
+Apr 29 00:49:40 *	SomeKittens scurries off to implement it
+Apr 29 00:49:45 <bnagy>	why are you doing all that?
+Apr 29 00:51:13 <bnagy>	ohh waitwait I see
+Apr 29 00:51:27 <bnagy>	you're trying to construct some arcane B, aren't you
+Apr 29 00:52:23 <SomeKittens>	WORKED
+Apr 29 00:52:36 <SomeKittens>	Thank you so much to you both for sticking with my dull brain
+Apr 29 00:52:41 <SomeKittens>	(it was a long day at work)
+Apr 29 00:53:10 <bnagy>	you took the long way around :)
+Apr 29 00:53:19 <bnagy>	I'll spoil you, now that you solved it
+Apr 29 00:53:19 <SomeKittens>	hah, no kidding
+Apr 29 00:53:32 <bnagy>	my B is AAAAA:admin<true
+Apr 29 00:54:51 <SomeKittens>	bnagy: as opposed to?
+Apr 29 00:55:04 <kjn>	i suppose you only need to munge the two bits that you want changed
+Apr 29 00:55:08 <bnagy>	lots of stuff xored together
+Apr 29 00:55:26 <bnagy>	^^ cause that, you only need to flip two bits
+Apr 29 00:55:44 <bnagy>	your way is going to be more useful later though
+Apr 29 00:55:51 <kjn>	':' XOR ';' = x
+Apr 29 00:56:08 <kjn>	then change the appropriate bit in A ciphertext to x
+Apr 29 00:56:34 <SomeKittens>	bnagy: oh, I thought the < was a typo
+Apr 29 00:56:37 <SomeKittens>	but yes, that makes sense
+Apr 29 00:57:34 <SomeKittens>	I guess I was trying to "brute force" it in a sense
+Apr 29 00:57:41 <kjn>	i might've done that if i wasn't working in python 3, which has immutable byte strings
+Apr 29 00:57:59 <kjn>	so i needed to regenerate the entire block anyway
+Apr 29 00:58:01 <bnagy>	bwaaahahaha now you get padding oracle
+Apr 29 00:58:05 <bnagy>	I LOVE this one
+Apr 29 00:58:23 <SomeKittens>	kjn: I'm working in Node.js, which has VERY mutable Buffers
+Apr 29 00:58:44 <bnagy>	and you'll need your xor algebra
+Apr 29 00:59:14 <kjn>	yeah. i might've made for work you then. sorry. :(
+Apr 29 00:59:28 <bnagy>	17 is probably my second favourite after 47/48
+Apr 29 00:59:59 <kjn>	you know there's a set 7 now, bnagy?
+Apr 29 01:00:14 <bnagy>	I know, but I haven't had time to do it
+Apr 29 01:00:23 <bnagy>	I am really waiting for the EC set
+Apr 29 01:00:39 <SomeKittens>	So are these at all helpful in the job hunt?
+Apr 29 01:00:47 <bnagy>	which I actually want to do for real stuff, cause I'm nessing with EC crypto irl
+Apr 29 01:01:06 <SomeKittens>	I'm meeting with some guys from Norse next week
+Apr 29 01:02:09 <kjn>	i should really get around to finishing these. they're pretty interesting
+Apr 29 01:02:19 <kjn>	only got through the first two sets
+Apr 29 01:02:51 <bnagy>	the DSA/RSA set is eyepopping
+Apr 29 01:03:08 <bnagy>	and those are full-on "you see this in the wild" attacks
+Apr 29 01:03:41 <bnagy>	some guys broke a bunch of firmware stuff with the bleichenbacher cube root think just last year
+Apr 29 01:03:51 <bnagy>	*thing
+Apr 29 01:04:42 <bnagy>	embedded. Hacking like it's 1989.
+Apr 29 01:06:00 <bnagy>	SomeKittens: if you finish all 48 without cheating and maybe nail microcorruption then I'm pretty sure someone will give you a start somewhere
+Apr 29 01:06:21 <SomeKittens>	Yeah, tackling Microcorruption after these
+Apr 29 01:06:31 <SomeKittens>	unless Starfighter finally releases
+Apr 29 01:06:32 <bnagy>	it's certainly a lot more impressive to people that actually know what they're talking about than any cert collection
+Apr 29 01:06:33 <lde>	Microcorruption is super neat
+Apr 29 01:06:39 <lde>	got through all but 1
+Apr 29 01:06:44 <lde>	but took me a *long* time
+Apr 29 01:07:58 <kjn>	microcorruption?
+Apr 29 01:08:15 <bnagy>	I think it's just microcorruption.com
+Apr 29 01:08:39 <bnagy>	yar. It's a CTF based on a simple CPU
+Apr 29 01:09:21 <bnagy>	exploit dev stuff
+Apr 29 01:10:09 <bnagy>	crap, I need to run
+Apr 29 01:10:11 <kjn>	huh
+Apr 29 01:10:39 <kjn>	looks interesting. i need to check it out
+Apr 29 01:10:43 <bnagy>	there is a lagoon sunset and a bunch of beers with my name of them
+Apr 29 01:11:46 <lde>	kjn: yah its basically binary exploitation on a 16 bit platform
+Apr 29 01:11:52 <kjn>	oooh! :)
+Apr 29 01:12:00 <lde>	but i learnt a lot there
+Apr 29 01:12:06 <kjn>	about the lagoon and beers, i mean. :)
+Apr 29 01:12:06 <lde>	am sure you'll have fun :)
+Apr 29 01:12:12 <lde>	lol
+Apr 29 01:19:11 <bnagy>	SomeKittens: oh, well done, btw :)
+Apr 29 01:19:19 <bnagy>	if you finish this next one you'll run the table
+Apr 29 01:19:33 <bnagy>	anyways, beer. o/
+Apr 29 01:19:38 <SomeKittens>	thanks
+Apr 29 01:19:53 <kjn>	yeah, 'grats SomeKittens
+Apr 29 01:20:03 <kjn>	getting one of those done is always a nice feeling :)
+Apr 29 01:26:43 *	sheilong has quit (Quit: Konversation terminated!)
+Apr 29 01:28:01 <SomeKittens>	oh yeah
+Apr 29 02:15:46 *	kjn has quit (Quit: I was quit when I came in here. I'm twice as quit now.)
+Apr 29 02:37:41 *	kjn (~kjn@24-136-26-109.c3-0.lem-ubr2.chi-lem.il.cable.rcn.com) has joined #cryptopals
+Apr 29 02:50:42 *	theme2 (~theme2@cm-114-109-18-160.revip13.asianet.co.th) has joined #cryptopals
+Apr 29 02:51:02 *	theme2 has quit (Max SendQ exceeded)
+Apr 29 02:51:26 *	theme2 (~theme2@cm-114-109-18-160.revip13.asianet.co.th) has joined #cryptopals
+Apr 29 02:51:40 *	theme2 has quit (Max SendQ exceeded)
+Apr 29 02:52:06 *	theme2 (~theme2@cm-114-109-18-160.revip13.asianet.co.th) has joined #cryptopals
+Apr 29 02:52:10 *	theme2 has quit (Remote host closed the connection)
+Apr 29 02:52:36 *	theme2 (~theme2@cm-114-109-18-160.revip13.asianet.co.th) has joined #cryptopals
+Apr 29 02:53:03 *	theme2 has quit (Remote host closed the connection)
+Apr 29 03:39:32 <Rami`>	SomeKittens | unless Starfighter finally releases
+Apr 29 03:39:39 <Rami`>	patience padawan
+Apr 29 03:39:49 <Rami`>	end of May is the target date afaik
+Apr 29 03:39:59 <Rami`>	maybe earlier
+Apr 29 03:40:26 <Rami`>	microcorruption has a channel too btw
+Apr 29 03:40:39 <Rami`>	it's quite a fun CTF, but it gets hard near the end
+Apr 29 03:41:00 <Rami`>	to the point that a lot of people use external debuggers that support MSP430
+Apr 29 04:54:23 *	SomeKittens has quit (Quit: Connection closed for inactivity)
+Apr 29 10:57:07 *	Disconnected (Connection timed out).
+**** ENDING LOGGING AT Wed Apr 29 10:57:07 2015
+
+**** BEGIN LOGGING AT Wed Apr 29 10:57:31 2015
+
+Apr 29 10:57:31 *	Now talking on #cryptopals
+Apr 29 10:57:31 *	Topic for #cryptopals is: Unofficial cryptopals.com discussion
+Apr 29 10:57:31 *	Topic for #cryptopals set by titanous at Tue Aug 12 12:53:13 2014
+Apr 29 11:12:04 *	jjarmoc (~jjarmoc@unaffiliated/jjarmoc) has joined #cryptopals
+Apr 29 11:24:51 *	jjarmoc has quit (Ping timeout: 265 seconds)
+Apr 29 12:56:34 *	SomeKittens (uid27802@gateway/web/irccloud.com/x-rjanxizlpfnfuemt) has joined #cryptopals
+Apr 29 13:03:32 *	kjn (~kjn@24-136-26-109.c3-0.lem-ubr2.chi-lem.il.cable.rcn.com) has joined #cryptopals
+Apr 29 13:03:36 *	kjn has quit (Client Quit)
+Apr 29 13:03:50 *	kjn (~kjn@24-136-26-109.c3-0.lem-ubr2.chi-lem.il.cable.rcn.com) has joined #cryptopals
+Apr 29 13:08:48 *	jjarmoc (~jjarmoc@unaffiliated/jjarmoc) has joined #cryptopals
+Apr 29 13:08:56 *	Torun (~TorunR@unaffiliated/torunr) has joined #cryptopals
+Apr 29 14:43:37 *	jjarmoc has quit (Ping timeout: 264 seconds)
+Apr 29 14:48:49 *	jjarmoc (~jjarmoc@unaffiliated/jjarmoc) has joined #cryptopals
+Apr 29 14:56:20 *	jjarmoc has quit (Ping timeout: 248 seconds)
+Apr 29 14:57:44 *	sheilong (~felipe@unaffiliated/sheilong) has joined #cryptopals
+Apr 29 15:45:51 *	Phlarp_ (~Phlarp@207-67-46-70.static.twtelecom.net) has joined #cryptopals
+Apr 29 16:16:00 *	TorunR (~TorunR@unaffiliated/torunr) has joined #cryptopals
+Apr 29 16:18:59 *	Torun has quit (Ping timeout: 245 seconds)
+Apr 29 17:23:58 *	kjn has quit (Quit: I was quit when I came in here. I'm twice as quit now.)
+Apr 29 18:21:02 *	sheilong has quit (Quit: Konversation terminated!)
+Apr 29 18:26:52 *	Torun (~TorunR@unaffiliated/torunr) has joined #cryptopals
+Apr 29 18:26:57 *	Torun has quit (Remote host closed the connection)
+Apr 29 18:30:36 *	TorunR has quit (Ping timeout: 256 seconds)
+Apr 29 19:55:24 *	kjn (~kjn@24-136-26-109.c3-0.lem-ubr2.chi-lem.il.cable.rcn.com) has joined #cryptopals
+Apr 29 22:00:16 *	sheilong (~felipe@unaffiliated/sheilong) has joined #cryptopals
+Apr 30 00:37:09 *	sheilong has quit (Remote host closed the connection)
+Apr 30 02:21:21 *	kjn has quit (Quit: I was quit when I came in here. I'm twice as quit now.)
+Apr 30 04:04:23 *	SomeKittens has quit (Quit: Connection closed for inactivity)
+Apr 30 11:42:45 Tcl interface unloaded
+Apr 30 11:42:45 Python interface unloaded
+Apr 30 11:42:45 Messaging Indicator 0.3.11 plugin unloaded.
+**** ENDING LOGGING AT Thu Apr 30 11:42:45 2015
+

@@ -1,0 +1,21 @@
+1. Answer in code - Successful conversion.
+
+2. Answer in code - Successful conversion.
+
+3. 'X' is the key. The plaintext string is -- Cooking MC's like a pound of bacon.
+
+4. String number 171 -- 7b5a4215415d544115415d5015455447414c155c46155f4058455c5b523f was the one that was encrypted. The key used was decimal 5/ENQ character. The plaintext string is -- Now that the party is jumping.
+
+5. Answer in code - Successfully encrypted.
+
+6.
+
+7. Decryption is done using an openssl command as follows. Base64 decoding is done first using the -a argument, the algorithm passed using the -d     
+   argument, input and output files with the -in and -out arguments respectively and finally the key "YELLOW SUBMARINE" in hex format as the key.
+   
+   openssl enc -a -d -aes-128-ecb -in cryp7_input_file -out cryp7_aes_decrypted -K 59454c4c4f57205355424d4152494e45
+
+   The other option is to use the OpenSSL::Cipher Ruby module as suggested and write some Ruby code. The file has to first be base64decoded and then  
+   decrypted. The decrypted text is the lyrics of a song called 'Vanilla Ice'
+
+8. String 133 is ECB encrypted. Nothing else matches - d880619740a8a19b7840a8a31c810a3d08649af70dc06f4fd5d2d69c744cd283e2dd052f6b641dbf9d11b0348542bb5708649af70dc06f4fd5d2d69c744cd2839475c9dfdbc1d46597949d9c7e82bf5a08649af70dc06f4fd5d2d69c744cd28397a93eab8d6aecd566489154789a6b0308649af70dc06f4fd5d2d69c744cd283d403180c98c8f6db1f2a3f9c4040deb0ab51b29933f2c123c58386b06fba186a

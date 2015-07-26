@@ -1,0 +1,109 @@
+**** BEGIN LOGGING AT Tue Apr 28 12:03:20 2015
+
+Apr 28 12:03:22 <lde>	http://pastebin.com/RQru9iUD
+Apr 29 03:31:33 <lde>	hey, i modified it a bit more - could you check if i'm on track still?
+Apr 29 03:31:35 <lde>	http://pastebin.com/YEaWAvKi
+Apr 29 03:31:59 <lde>	thx :) afk though ...sleep time
+Apr 29 03:33:57 <lde>	been trying to use this page as a guide too with the same example - http://www.simonsingh.net/The_Black_Chamber/crackingprinciple.html
+Apr 29 03:38:47 <Rami`>	why are you dividing by keysize when generating the hamming scores?
+Apr 29 03:39:26 <lde>	shouldn't i?
+Apr 29 03:39:59 <lde>	to normalize key scores?
+Apr 29 03:41:38 <Rami`>	No, you want to take the sum of all hamming scores, then divide by the number of scores you calculated
+Apr 29 03:41:41 <Rami`>	to take the average
+Apr 29 03:41:49 <Rami`>	for each key size
+Apr 29 03:41:51 <Rami`>	then take lowest
+Apr 29 03:42:00 <lde>	right, but i also took average a line below
+Apr 29 03:42:09 <lde>	i wont divide by keysize though
+Apr 29 03:42:23 <Rami`>	yeah your averaging is fine
+Apr 29 03:42:29 <Rami`>	the dividing is probably make it unduly hard
+Apr 29 03:42:40 <Rami`>	also you want a sample size of 6 not 4 :)
+Apr 29 03:42:59 <lde>	ah i though 6 total combinations
+Apr 29 03:45:23 <lde>	you know, if i take the division out, and average
+Apr 29 03:45:34 <lde>	i get very weird very sequentially increasing numbers
+Apr 29 03:46:39 <Rami`>	your t3 list ,what's the format there?
+Apr 29 03:47:06 <Rami`>	index + pair of samples in each entry?
+Apr 29 03:48:30 <lde>	for keylen of 2
+Apr 29 03:48:32 <lde>	----------
+Apr 29 03:48:33 <lde>	[('DP', 'RY'), ('DP', 'EV'), ('DP', 'NT'), ('DP', 'NB'), ('DP', 'UK'), ('RY', 'EV'), ('RY', 'NT'), ('RY', 'NB'), ('RY', 'UK'), ('EV', 'NT'), ('EV', 'NB'), ('EV', 'UK'), ('NT', 'NB'), ('NT', 'UK'), ('NB', 'UK')]
+Apr 29 03:48:47 <Rami`>	sorry early morning for me here
+Apr 29 03:48:54 <Rami`>	right your list expression there
+Apr 29 03:49:02 <Rami`>	s1= [(utility.hamming_distance(t3[count][0], t3[count][1])/keysize) for count,value in enumerate(t3)]
+Apr 29 03:49:05 <lde>	sorry :)
+Apr 29 03:49:23 <Rami`>	this count,value
+Apr 29 03:49:25 <Rami`>	what's that all about
+Apr 29 03:49:32 <Rami`>	count = the index?
+Apr 29 03:50:50 <lde>	correct
+Apr 29 03:50:53 <Rami`>	cause it sounds like you want [utility.hamming_distance(value[0], value[1]) for count, value in enumerate(t3)]
+Apr 29 03:50:58 <lde>	python's enumerate auto gens an index
+Apr 29 03:51:11 <lde>	hm
+Apr 29 03:51:36 <Rami`>	then all_hamming_distances[keysize] = (sum(s1)/no_of_samples)) / keysize
+Apr 29 03:52:36 <lde>	okay i'll play around
+Apr 29 03:52:50 <Rami`>	not sure if dividing early actually makes much of a difference
+Apr 29 03:52:56 <Rami`>	you deffo don't want to hardcode that 6
+Apr 29 03:53:09 <lde>	the other question i had was.... then after i do this and transpose, and do the XOR
+Apr 29 03:53:12 <Rami`>	http://codepad.org/e4jwaPUo here's my ruby function for it
+Apr 29 03:53:19 <Rami`>	yes
+Apr 29 03:53:19 <lde>	thx
+Apr 29 03:53:33 <lde>	so if i go by the example here..http://www.simonsingh.net/The_Black_Chamber/crackingprinciple.html
+Apr 29 03:53:54 <lde>	for a keylen of say 5
+Apr 29 03:53:59 <lde>	no 4
+Apr 29 03:54:33 <lde>	DPRY  xor KKKK is going to happen at some point
+Apr 29 03:54:35 <lde>	rt?
+Apr 29 03:54:47 <lde>	no.. DENW xor KKKK
+Apr 29 03:55:34 <lde>	gonna head off to bed, nearly 4 here
+Apr 29 03:55:51 <Rami`>	heh ok
+Apr 29 03:55:57 <Rami`>	sorry I didn't see a question there btw
+Apr 29 03:56:11 <lde>	rt so what i meant was...
+Apr 29 03:56:19 <Rami`>	the transpose (once you know the keylength) basically means you get a bunch of bytes in each array
+Apr 29 03:56:23 <lde>	if i xor each block with ascii(0..127)
+Apr 29 03:56:26 <Rami`>	that are all XORd by the same byte
+Apr 29 03:56:30 <lde>	correct
+Apr 29 03:56:33 <Rami`>	i.e. it reduces the problem space to single XOR 
+Apr 29 03:56:50 <lde>	now though...there are multiple blocks that contain ascii
+Apr 29 03:56:55 <lde>	after xor
+Apr 29 03:56:57 <lde>	meaning
+Apr 29 03:57:08 <lde>	say after transpose i get DSWER for a block
+Apr 29 03:57:13 <lde>	then i go
+Apr 29 03:57:31 <lde>	for i in (ascii(1) to ascii(127))
+Apr 29 03:57:42 <lde>	.... dswer xor i
+Apr 29 03:57:53 <lde>	but multiple blocks all evaluate to ascii
+Apr 29 03:57:58 <Rami`>	do they?
+Apr 29 03:58:04 <lde>	oh horribly so
+Apr 29 03:58:10 <lde>	must be doing something wrong then
+Apr 29 03:58:22 <Rami`>	btw the XOR byte can be any value
+Apr 29 03:58:26 <lde>	let me tweak my code again and come back
+Apr 29 03:58:29 <Rami`>	it's the sameas the previous exercise
+Apr 29 03:58:42 <Rami`>	so you try 0-255
+Apr 29 03:58:53 <Rami`>	you need to use the scoring functions you came up with
+Apr 29 03:58:53 <lde>	right i re ran that example... i get a lot of ascii there too.. but 1 was redable
+Apr 29 03:59:04 <lde>	out of say the 11 or 12 so answers i got
+Apr 29 03:59:05 <Rami`>	how good was your scoring function?
+Apr 29 03:59:08 <lde>	so i could guess
+Apr 29 03:59:13 <Rami`>	normally you'll get gibberish chars too
+Apr 29 03:59:13 <lde>	a bit meh
+Apr 29 03:59:18 <Rami`>	like %*{}"\
+Apr 29 03:59:23 <Rami`>	or even weirder
+Apr 29 03:59:40 <lde>	just regex to check if all chars were between 32 and 127
+Apr 29 03:59:53 <Rami`>	basically I scored it via: scoring based on occurrence in english (i.e space = 0.2, e = 0.19, a = 0.12, etc...)
+Apr 29 03:59:59 <Rami`>	so score each char that comes back gainst english
+Apr 29 04:00:20 <lde>	okay i'll try
+Apr 29 04:00:23 <Rami`>	and I took some negative socre for the amount of "noise", i.e. the amount of !\[][ chars
+Apr 29 04:00:42 <lde>	right
+Apr 29 04:00:54 <lde>	sigh, got to rewrite that better then i guess
+Apr 29 04:01:10 <Rami`>	http://codepad.org/rcytV41u
+Apr 29 04:01:18 <Rami`>	my "scoring a sentence" function
+Apr 29 04:01:28 <lde>	heh would this be a spoiler though?
+Apr 29 04:01:31 <lde>	or is it cool?
+Apr 29 04:02:19 <Rami`>	well, if you can understand it, it wil hopefully help
+Apr 29 04:02:24 <Rami`>	don't just copy :P
+Apr 29 04:02:31 <Rami`>	you've done that exercise yourself
+Apr 29 04:02:37 <Rami`>	so no harm now seeing at someone else has done
+Apr 29 04:02:46 <lde>	cool thanks
+Apr 29 04:02:58 <lde>	cya tomorrow after i break my head a bit more
+Apr 29 04:03:05 <Rami`>	btw IC = http://en.wikipedia.org/wiki/Index_of_coincidence
+Apr 29 04:03:07 <Rami`>	ok laters
+Apr 29 04:03:18 <lde>	cya
+Apr 29 10:57:07 *	Disconnected (Connection timed out).
+Apr 29 10:57:25 *	lde sets mode +i lde
+**** ENDING LOGGING AT Thu Apr 30 11:42:45 2015
+

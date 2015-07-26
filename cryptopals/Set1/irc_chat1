@@ -1,0 +1,356 @@
+* Now talking on #cryptopals
+* Topic for #cryptopals is: Unofficial cryptopals.com discussion
+* Topic for #cryptopals set by titanous at Tue Aug 12 12:53:13 2014
+* Rami` (~root@li352-130.members.linode.com) has joined #cryptopals
+<lde> hi.. i'm stuck on set 1 challenge 6 and am fairly sure I have misunderstood steps 3 and 4 in the problem. Need some help. Anyone?
+<bnagy> what's your issue?
+<lde> well, i'm not sure how to select bytes to compare
+<lde> as in, what offsets do you take data from and compare?
+<lde> for eg
+<lde> do i take (for keysize=2) 
+<lde> compare(byte[0:2], byte[2:4])
+<lde> ?
+<lde> or is it something else
+<bnagy> if keysize is 3 then you break the ciphertext into "columns"
+<bnagy> all bytes 0%3 all bytes 1%3 and 2%3
+<bnagy> then you solve each column as a simple xor cipher
+<lde> sorry i didnt understand
+<lde> it says - "For each KEYSIZE, take the first KEYSIZE worth of bytes, and the second KEYSIZE worth of bytes, and find the edit distance between them."
+<bnagy> there are two steps to the problem - one is determining the key size, the second is solving the 'columns'
+<lde> so if KEYSIZE=2, I take the first 2 bytes... then increase offset by 2...and tkae the next2 bytes
+<lde> a= ciphertext(0,2)
+<lde> b=ciphertext(2,4)
+<lde> compare(a,b)
+<bnagy> forget code or pseudocide
+<lde> is this rt?
+<lde> okay
+<bnagy> in whatever language you're using
+<lde> yes so i think i get the 2nd part ... but have not understood the 1st part
+<bnagy> when you get the correct keysize the hamming changes
+* PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+<bnagy> the best way I know is still to visualise this as columns
+<bnagy> if you're doing hamming between random english, but still english, the way english is biased means there's less entropy
+<bnagy> any two english words of eight letters will have an avg hamming distance of whatever the entropy of english is
+<bnagy> it may be much less like if you picked two words like cat and bat
+<bnagy> because english in general is low entropy ( not very random )
+<bnagy> following so far?
+<lde> yes..
+<bnagy> and the hamming of 8 random bytes from 8 random bytes will be high, let's say ~4
+<SomeKittens> Hint: See the "etaoin shrdlu" mention?  Look that up
+<bnagy> because that's your maximum entropy. It might still be less, of course, if you randomly picked two strings almost the same
+<SomeKittens> that's what helped me get over that hump
+<bnagy> it's just unlikely
+<bnagy> so average hamming of random v random -> high english v english -> lower
+<bnagy> still following?
+<lde> so hamming as i get it is - positions where content differs
+<bnagy> yep
+<lde> so cat vs bat has a hamming of 1
+<lde> ?
+<bnagy> bitwise
+<bnagy> uh I don't know without checking if it's 1, but whatever the bit distance is c->b
+<lde> rt .. 
+<bnagy> oh, I guess 1 derp
+<bnagy> :D
+<lde> lol
+<lde> so the more random content is...
+<bnagy> but important to know it's bits not character distance or anything
+<lde> the greater the hamming distance is
+<lde> correct?
+<bnagy> yes
+<bnagy> on average
+<lde> correct...bit distance i get that
+<bnagy> ok. Now, visualise stuff as columns again
+<bnagy> or just write out a long setence in 4 columns or something
+<lde> "This does work well"
+<lde> that work?
+<lde> without the spaces
+<bnagy> when they encrypted they xored all letters in that column with the same byte
+<bnagy> so if you looked at the unencrypted column, what would you expect for the hamming?
+<lde> so..if i take my example above
+<lde> t d w w are all in the 1st column
+<lde> rt?
+<bnagy> yep
+<bnagy> so say you did hamming on td vs ww, why not
+<bnagy> are we getting very-random or english-looking distance?
+<lde> i want to say english looking .. just coz they are all part of the alphabet - but i dont know for sure
+<bnagy> yep
+<bnagy> now, what effect would it have if we xored both those words with one byte?
+<lde> i think then ...more bits would become similar?
+<bnagy> same byte for all 4 chars, obvs
+<bnagy> try it out in your repl or on paper or something
+<lde> k gimme a sec
+* CARAM__ has quit (Ping timeout: 256 seconds)
+* CARAM__ (sid27279@gateway/web/irccloud.com/x-kusqvrjdgxjdqjwh) has joined #cryptopals
+* PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+* dkathayat (dkathayat@nat/iiit/x-bbepbrxawwnmrcve) has joined #cryptopals
+<lde> well... i xored t,d,w all with a
+<lde> that gave me 21,5,22
+* PaulCapestany has quit (Ping timeout: 256 seconds)
+<lde> in decimal
+<lde> 21 and 22 seem very close to each other
+<lde> so again...with a low hamming distance?
+<bnagy> right
+<bnagy> it won't be exactly the same as the hamming for the plain
+<bnagy> but it's still low-ish, cause if you think about it you're applying a constant permutation
+<bnagy> so we know that when we're in alignment ( when we have the right keysize ) each column is internally going to be english-ish entropy
+<lde> correct
+<bnagy> so when you wrote down that sentence, and you compare row 0 with row 1, where each column uses a different key byte that you don't know...
+<bnagy> your byte-by-byte comparisons are still within the same column
+<lde> rt..
+<lde> meaning then
+<bnagy> now.. say real keysize is 4. What can you say about what you expect for hammings when you test with size 3, 4 and also 8
+<lde> hm
+<lde> thinking
+<bnagy> \o/
+<lde> so i think
+<lde> 4 and 8 shd be pretty similar
+<lde> whatever results i get i mean
+<lde> but 3 will be different
+<bnagy> right
+<bnagy> 4 and 8 the bytes are the same 'colour' after xor
+<lde> correct
+<bnagy> 3 you're comparing bytes xored with totally different values
+<lde> which is why we're guessing key length
+* bren2010_ has quit (Ping timeout: 265 seconds)
+<bnagy> yep
+<bnagy> and also a hint as to a small problem you will run into
+<lde> so if we get 1 column's 'correct' key.. we've solved a lot of letters
+<bnagy> well we're not there yet
+<lde> sorry lol
+<bnagy> right now we're just trying to line up the bytes, so we know how many columns to use
+<lde> rt
+<bnagy> BUT once we do, you can attack each column individually
+<bnagy> and you've already done that
+<lde> rt that's what the XOR was for
+<lde> so then... i split the ciphertext into 2 cols to start with... then 3 and so on till 41
+<bnagy> yep
+<lde> but the next quest then is
+<lde> how many samples per keysize?
+<bnagy> then you start pulling rows as your 'words'
+<bnagy> and doing byte by byte hamming on each word
+<bnagy> up to you
+<bnagy> the question says just two, but most people do more
+<lde> rt so thats what i got confused with
+<lde> i was doing just 1 compare per keysize
+<bnagy> that should work, tbh
+<lde> hm
+<bnagy> you should see the correct keysize in the top few, anyway
+<bnagy> there's no "best" way afaik to increase the compares
+<lde> cool
+<lde> so just so i got it...
+<bnagy> like you need to compare multiple pairs of 'words' and then normalize the scores
+<lde> for "this does work well" and a keysize of 2
+<lde> i split it into
+<lde> th, is, do, es ... for example
+<lde> and compare th,is  OR do,es or whatever number of samples
+<bnagy> and you compare?
+<bnagy> yep
+<bnagy> or all of the above and normalise the scores
+<lde> then once i have enough...normalize... next keysize
+<bnagy> but just as valid to compare th,es etc
+<bnagy> as long as you don't compare th,th basically
+<lde> so that way... i'm comparing samples PER length .. effectively... coz i want to findo ut the length
+<lde> THEN all the rest
+<lde> i think i have enough to work with now
+<lde> thanks a ton for your help :)
+<bnagy> no worries
+<bnagy> it's a bit mindbending working out how the magic hamming thing works, the first time
+<lde> yeah the language really confused me 
+<lde> on the site
+<lde> then i gave up and started reading solutions...but that was worse lol
+<lde> so i came here
+<lde> now i'll redo my stuff
+<lde> now that i understand what to do lol
+<bnagy> 6 is one of the trickier early problems
+<bnagy> because it's two fragile processes next to each other
+<bnagy> and if you get the keysize wrong you're boned and it can be hard to debug
+<lde> yeah i got all the rest in set 1 ... a long time back... got back to playing this recetnly, and promptly got stuck lol
+<SomeKittens> lde: Yeah, I got stuck too
+<lde> the only other question i had was... after base64decode, do i hex() the data on these problems before trying to decrypt? or just work directly with the text
+<SomeKittens> no shame in it
+<lde> SomeKittens: totally yeah, such a nice way to learn crypto - which frankly I am quite poor at
+<bnagy> base64decode ( don't know your language ) should give you a plain old lump of bytes
+<SomeKittens> Up until I started the challenges, I thought it was 98% math
+<lde> python
+<bnagy> ok afaik python uses immutable but 'raw' strings
+<bnagy> so you should be good to operate directly on those
+<bnagy> hex encoding is just for humans to look at
+<lde> cool - would that be the case in the real world as well? If i got an encrypted blob of text and worked on it with python?
+<bnagy> all encrypted blobs you get in the real world will be encoded somehow
+<lde> SomeKittens: I guess I mean... the root is still math, just that its not as *awfully hard* to break as one thinks 
+<bnagy> but in any number of ways, so you just decode to 'raw' and then operate on that
+<bnagy> some of the mtso problems use hex encoding instead of b64 for example
+<lde> so meaning, as long as I decode correctly in python - i should get a raw string and can work with that?
+<bnagy> I think so
+<bnagy> I am not good at the pythons
+<lde> np np... you'd think any language would give you back a string? no?
+<lde> intuitively i mean
+<bnagy> well I don't know which languages have strings that are collections of multi-byte chars instead of raw bytes
+<lde> cool np
+<lde> i'll go try this now, thanks again
+<lde> i'll let you know if i get it
+<bnagy> good luck :)
+<lde> ty :)
+<SomeKittens> bnagy: mind if I ask for some help?
+<SomeKittens> I'm stuck on 16
+<bnagy> sure
+<bnagy> CBC bitflip :P
+<bnagy> it's not too bad.
+<SomeKittens> I think I just misunderstand how CBC works
+<SomeKittens> so I create an "error" in one block
+<SomeKittens> and that block gets painfully garbled
+<SomeKittens> and the next block gets XOR'd wrong where I created the error
+<SomeKittens> but how can I control XOR output if I don't know one of the inputs?
+<bnagy> yep
+<SomeKittens> am I at least barking up the right tree?
+<SomeKittens> (or meowing, as the case may be)
+<bnagy> what can you control?
+<SomeKittens> I can control the ciphertext
+<bnagy> uh
+<bnagy> well you can screw with the plaintext
+<bnagy> *cipher
+* PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+<bnagy> you can screw with the ciphertext but you can't 'control' it cause you don't have the key
+<SomeKittens> ah, ok
+<bnagy> so once we have a ciphertext, we know that we can flip bits in one block, and that will flip the same bits in the following block, but hose this one
+<bnagy> how many plaintext blocks can you control?
+<SomeKittens> bnagy: plenty
+<SomeKittens> but they're in the middle
+* PaulCape_ has quit (Ping timeout: 256 seconds)
+<SomeKittens> http://cryptopals.com/sets/2/challenges/16/
+<bnagy> yeah I know the challenge :)
+<SomeKittens> the challenge does say "Modify the ciphertext"
+<SomeKittens> (oops sorry)
+<bnagy> how would you hack this server if there was no check in the decryption?
+<SomeKittens> I may be missing a definition somewhere - if there wasn't a check, I couldn't set admin=true ?
+<bnagy> in the encryption sorry
+<bnagy> yeah you could, and what string would you insert
+<SomeKittens> admin=true;
+<bnagy> sure
+<bnagy> or foo;admin=true; or whatever
+<SomeKittens> right
+<bnagy> the postfix is going to put your terminating ; on there for you
+<bnagy> so you don't need it, but having one doesn't hurt I guess
+<bnagy> so now you need to think about what you can pass that will pass the lazy pre-encryption check
+<bnagy> but that we can use this interesting bitflipping property on
+<SomeKittens> RIGHT
+<SomeKittens> I can control both sides of the XOR that way
+<SomeKittens> thanks
+<bnagy> :)
+* PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCapestany has quit (Ping timeout: 256 seconds)
+* PaulCape_ has quit (Max SendQ exceeded)
+* PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCapestany has quit (Max SendQ exceeded)
+* PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+<lde> so i did all that "key-length" finding we talked about
+<lde> then took the average for 4 samples PER keysize - hamming_dist/4
+<lde> that comes out to 4 for a KEYSIZE of 2 ... and 127 for a KEYSIZE of 40
+<lde> that sound rt?
+<bnagy> uh
+<bnagy> you have to normalise it by length as well
+<bnagy> so that you can meaningfully per-byte hamming for strings length 2 with strings length 40
+<bnagy> +compare
+* PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+<lde> hm
+<lde> i went by this line - "Or take 4 KEYSIZE blocks instead of 2 and average the distances."
+* PaulCapestany has quit (Ping timeout: 256 seconds)
+<lde> so i thought i just divide by no_of_samples .. no?
+* PaulCape_ has quit (Max SendQ exceeded)
+* PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCapestany has quit (Max SendQ exceeded)
+* PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+<lde> so i dumped the "average" calculation and divided by KEYSIZE instead
+<lde> sum(4 samples per KEYSIZE) / KEYSIZE
+<lde> that causes stuff to be much closer to each other
+<lde> most come out to be 12 or 13
+<lde> keysize 2 has a normalized distance of 9
+<lde> and keysize 5 has 10
+<lde> couple of 11 and 14
+<lde> all rest is 12 and 13
+* PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCapestany has quit (Ping timeout: 256 seconds)
+* PaulCape_ has quit (Max SendQ exceeded)
+* PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+<lde> floating point division does make a difference though - not sure if I am right
+* PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCapestany has quit (Ping timeout: 256 seconds)
+* synfinatic has quit (Ping timeout: 256 seconds)
+* PaulCape_ has quit (Max SendQ exceeded)
+* PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+* synfinatic (synfinatic@2600:3c00::f03c:91ff:fe96:28df) has joined #cryptopals
+<bnagy> you definitly want floating point
+<bnagy> but none of your hammings should be above 8
+<lde> hm is the addition logic rt though?
+<lde> sum(4 samples per KEYSIZE) / KEYSIZE
+<bnagy> think about what you're trying to compare
+* synfinatic has quit (Excess Flood)
+* synfinatic (synfinatic@2600:3c00::f03c:91ff:fe96:28df) has joined #cryptopals
+<lde> hmm
+<lde> different samples of the same keysize length
+<lde> so... instead of summing up, i calculated it for *each* sample...and that has much smaller distances
+<lde> so maybe then ... i need to calculate it per sample FIRST... then average it out by div by no_of_samples... and then take the smallest keysizes and go from there
+* PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+* mykolaiv (~vsavch@c-24-60-79-55.hsd1.nh.comcast.net) has left #cryptopals
+* PaulCapestany has quit (Ping timeout: 276 seconds)
+* synfinatic has quit (Ping timeout: 256 seconds)
+* synfinatic (synfinatic@2600:3c00::f03c:91ff:fe96:28df) has joined #cryptopals
+* bren2010 (~bren2010@unaffiliated/bren2010) has joined #cryptopals
+* PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCape_ has quit (Ping timeout: 252 seconds)
+* synfinatic has quit (Excess Flood)
+* synfinatic (synfinatic@2600:3c00::f03c:91ff:fe96:28df) has joined #cryptopals
+* PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCapestany has quit (Ping timeout: 256 seconds)
+* Phlarp (~Phlarp@c-66-41-50-193.hsd1.mn.comcast.net) has joined #cryptopals
+* PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCape_ has quit (Ping timeout: 264 seconds)
+* PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCapestany has quit (Ping timeout: 256 seconds)
+* PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCape_ has quit (Ping timeout: 264 seconds)
+* PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCapestany has quit (Ping timeout: 256 seconds)
+* artifexd has quit (Ping timeout: 256 seconds)
+* artifexd (sid28611@gateway/web/irccloud.com/x-ysqoxtxekgeccynv) has joined #cryptopals
+* PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCape_ has quit (Ping timeout: 255 seconds)
+* PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCapestany has quit (Ping timeout: 256 seconds)
+* Disconnected (Invalid argument).
+* lde sets mode +i lde
+* Now talking on #cryptopals
+* Topic for #cryptopals is: Unofficial cryptopals.com discussion
+* Topic for #cryptopals set by titanous at Tue Aug 12 12:53:13 2014
+* PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCape_ has quit (Ping timeout: 240 seconds)
+* PaulCapestany has quit (Ping timeout: 256 seconds)
+* jjarmoc (~jjarmoc@unaffiliated/jjarmoc) has joined #cryptopals
+* PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCapestany has quit (Ping timeout: 256 seconds)
+* PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCape_ has quit (Ping timeout: 256 seconds)
+* PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCapestany has quit (Ping timeout: 256 seconds)
+* PaulCape_ has quit (Max SendQ exceeded)
+* PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+* SomeKittens (uid27802@gateway/web/irccloud.com/x-iavooivyogolfxnv) has joined #cryptopals
+* PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCapestany has quit (Ping timeout: 256 seconds)
+* PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCape_ has quit (Ping timeout: 252 seconds)
+* PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCapestany has quit (Ping timeout: 256 seconds)
+* PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCape_ has quit (Ping timeout: 264 seconds)
+* PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCapestany has quit (Ping timeout: 256 seconds)
+* PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCape_ has quit (Ping timeout: 245 seconds)
+* PaulCapestany has quit (Max SendQ exceeded)
+* PaulCapestany (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCape_ (~PaulCapes@204.28.124.82) has joined #cryptopals
+* PaulCapestany has quit (Ping timeout: 256 seconds)
+* xmgv (~maxi@unaffiliated/plist) has joined #cryptopals
+* Torun has quit (Quit: Leaving)
