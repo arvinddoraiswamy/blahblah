@@ -1,8 +1,0 @@
-- Clears up 2400 to 246f and fills up with zeros.
-- Password starts getting filled up at 2400.
-- Copies password into 43ee.
-- memset clears up 2400 and fills it with zeros again for some reason.
-- conditional unlock door seems similar to whitehorse. Maybe same payload will work. Trigger 7f.
-- Ha. Everything's the same as Whitehorse. Same payload. Same addresses.
-- strcpy + null bytes forbidden maybe? Lemme check on Whitehorse and here.
-- Yeah 4142434445464748495051525354555660447f works but 3300350000000000000000000000000060447f does not work in Montevideo. This is because strcpy() is used to copy the bytes from 2400 to 43ee and since it sees the null bytes in there it doesn't copy anything and thinks it is a null string.

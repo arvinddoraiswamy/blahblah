@@ -1,8 +1,0 @@
-- Heh. 20 points? Shd be easy. Maybe ;)
-- Are you using all the functionality your debugger gives you?
-    - Toggle minimal mode
-    - track, untrack registers
-    - read the help
-- Don't keep thinking of classic buffer overflows and sending large strings. Sometimes you can do stuff even with short strings.
-- Again, old question, what inputs, how long, where do they go, what part of the program deals with which? How?
-- Are specific bits of your input used anywhere?
