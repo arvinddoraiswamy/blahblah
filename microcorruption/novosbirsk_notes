@@ -1,0 +1,10 @@
+- Another format string vulnerability
+- Need to enter username. Max limit is fe0a - that's 65534 characters - the max supported by the controller
+- strcpy too so no null characters in there
+- Could try and overwrite return address after strcpy (a) - So strcpy overwrites only till 43f0...doesn't write in the actual code section. Must ask why.
+- printf so format string attacks possible again (b)
+- conditional_unlock_door which uses 7e - need to make that 7f somehow (c)
+- Normal flow goes to conditional_unlock_door so all we need to do is to make 7e 7f and we're good
+- You don't need the damn %x - it's all addresses :-o :-o
+- Wrote 127 bytes and overwrote INT 7e with INT 7f. Done :)
+- c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c844c8256e
