@@ -1,0 +1,47 @@
+Last weekeend I played a bit of Defcamp with Neg9. I started on a reversing challenge, and was halfway there before someone solved it before me :). So I picked up Crypto 50 instead. Now I
+rarely pick those up as frankly, I'm quite poor at it. But there's a first time for everything in life, so I grabbed it.
+
+This had a bunch of 11 encrypted texts. All of them were encrypted with the same keystream. The flag was the plaintext of the 11th encrypted text. So in short, we needed to use the info that
+was given, find the key and then use the key to decrypt the last text message. Hm. How to proceed?
+
+Now any one reading this writeup will have heard people/articles/books say "Never encrypt multiple messages with the same key. Its bad.". That's what this challenge was based on. In cryptographic terms, this is what is called a many-time-pad. A one-time-pad is considered cryptographically secure as there is only ever ONE message encrypted with a given key. The moment you reuse the key though, it becomes a many-time-pad and very very trvially breakable. Not that I knew how ;).. so I started reading. Eventually I found an awesome blog that explained the entire cracking process - http://adamsblog.aperturelabs.com/2013/05/back-to-skule-one-pad-two-pad-me-pad.html. So I started following what he said step-by-step.
+
+The key principle on which this was based, was that
+	a) there wasn't any fancy encryption (XOR) and 
+	b) m1 XOR m2 (plaintext) = c1 XOR c2
+	
+What we had was c1,c2...c11. ANd what we want is m11. So I XORED every single text with every other text and stored its result. Meaning.. 
+	c1 XOR c2, c1 XOR c3... c1 XOR c11
+   ....
+   c11 XOR c1, c11 XOR c2.... c11 XOR c10
+
+This gave me a new set of junk to look at. But remember c1 XOR c2 = m1 XOR m2. So if there was some way I could get some info from c1 XOR c2.... I would have some info about m1 XOR m2 and 
+then hopefully also about m1 and m2 individually. The next thing I did was convert c1 XOR c2 into ASCII. Predictably, some converted properly to ASCII, but others were just non printable characters. So... nothing here to look at. Wait, not so soon..
+
+Think of it... if you get 'A' as one character in ASCII(c1 XOR c2), it means m1 XOR m2 for that char lets say char 1 is also A. Meaning...
+  m1[1] XOR m2[1] = A
+ 
+ ... now 'what' XOR 'what' in the alphabet (and we know its the alphabet) will give you 'A'? Look at your ASCII table again. Its 'a'. 'a' XOR SPACE = 'A' :). Which means... either...
+ m1[1] = SPACE and m2[1] = 'a'
+ OR
+ m1[1]='a' and m2[1] = SPACE
+ 
+ So we can repeat this wherever we find a letter. But which in m1 or m2 is a SPACE? Is it m1[1] or m2[1]? See the problem?
+ 
+ So we then do m1 XOR m3, m1 XOR m4 ... and see if we get letters again. Of course we again get letters, different ones. Apply the same principle and find the 'may_be_a_space' for these combinations too. The key being, wherever you see the same position come up as a potential space across different XORs... it means that position in m1 has the space. Meaning..
+ 
+ if m1[1] XOR m2[1] = 'A' and m1[1] XOR m3[1] = 'B' we have m1[1] or m2[1] as a SPACE... and m1[1] or m3[1] as a space. But the only one that is common between both is m1[1] .. means..
+ 
+ m1[1] = SPACE, m2[1] = 'a' and m3[1] = 'b'
+ 
+ Clear? :). If not go and read that link I refered to above. That's what I did, again and again till it was clear.
+ 
+ Once that was clear, all that was left was to repeat this across the 11 messages and print the 'potential' plain text out. To my surprise it decrypted an insane number of messages. Okay, not fully... not 100%, but with enough letters filled in that you could guess entire words.
+ 
+ That left the last part, fill up words... like for example ... a word would decrypt as crtpto. The correct word of course is 'crypto'. Means one of the characters in the key was wrong. To find the key out, for crtpto.... correct to crypto. Then XOR 'y' with the corresponding ciphertext in that position to get the 'key'. Because m1 XOR k = c1 and hence c1 XOR m1 = k. Use k across the other messages. Choose your messages carefully, for eg. half of the 3rd message would be right, but the rest wrong. So you use only half of it and decrypt. Pick the 2nd half from some other message. And so on, till you get the entire key. After which you can decrypt all the messages :)
+ 
+I got a bit lucky this time as the 6th message was perfectly decrypted, i mean.. enough so I could guess the rest. Used that, confirmed I was right by googling the string (stream cipher article on Wikipedia had all the text lol), got the key and used it to decrypt the 11th text :)
+
+The flag -> was when using a stream cipher, never use the key more than once!
+
+The code I used is probably not great but it'll do :). Attached code.
