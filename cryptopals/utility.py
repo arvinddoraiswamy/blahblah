@@ -7,13 +7,170 @@ import sys
 import re
 import base64
 import binascii
+import itertools
 
 #Adding directory to the path where Python searches for modules
 cmd_folder = os.path.dirname('/home/arvind/Documents/Me/My_Projects/Git/Crypto/modules/')
 sys.path.insert(0, cmd_folder)
 import common
+import string
 
 base64_alphabet={}
+
+def letter_frequency(string):
+  letter_count= {}
+  letter_count['e'] = 0
+  letter_count['t'] = 0
+  letter_count['a'] = 0
+  letter_count['o'] = 0
+  letter_count['i'] = 0
+  letter_count['n'] = 0
+  letter_count['s'] = 0
+  letter_count['h'] = 0
+  letter_count['r'] = 0
+  letter_count['d'] = 0
+  letter_count['l'] = 0
+  letter_count['u'] = 0
+  letter_count['c'] = 0
+  letter_count['m'] = 0
+  letter_count['w'] = 0
+  letter_count['f'] = 0
+  letter_count['y'] = 0
+  letter_count['g'] = 0
+  letter_count['p'] = 0
+  letter_count['b'] = 0
+  letter_count['v'] = 0
+  letter_count['k'] = 0
+  letter_count['x'] = 0
+  letter_count['j'] = 0
+  letter_count['q'] = 0
+  letter_count['z'] = 0
+
+  split_str= list(string)
+  for i in range(0,len(split_str)):
+    if split_str[i] == 'e':
+      letter_count['e']+=1
+    elif split_str[i] == 't':
+      letter_count['t']+=1
+    elif split_str[i] == 'a':
+      letter_count['a']+=1
+    elif split_str[i] == 'o':
+      letter_count['o']+=1
+    elif split_str[i] == 'i':
+      letter_count['i']+=1
+    elif split_str[i] == 'n':
+      letter_count['n']+=1
+    elif split_str[i] == 's':
+      letter_count['s']+=1
+    elif split_str[i] == 'h':
+      letter_count['h']+=1
+    elif split_str[i] == 'r':
+      letter_count['r']+=1
+    elif split_str[i] == 'd':
+      letter_count['d']+=1
+    elif split_str[i] == 'l':
+      letter_count['l']+=1
+    elif split_str[i] == 'u':
+      letter_count['u']+=1
+    elif split_str[i] == 'c':
+      letter_count['c']+=1
+    elif split_str[i] == 'm':
+      letter_count['m']+=1
+    elif split_str[i] == 'w':
+      letter_count['w']+=1
+    elif split_str[i] == 'f':
+      letter_count['f']+=1
+    elif split_str[i] == 'y':
+      letter_count['y']+=1
+    elif split_str[i] == 'g':
+      letter_count['g']+=1
+    elif split_str[i] == 'p':
+      letter_count['p']+=1
+    elif split_str[i] == 'b':
+      letter_count['b']+=1
+    elif split_str[i] == 'v':
+      letter_count['v']+=1
+    elif split_str[i] == 'k':
+      letter_count['k']+=1
+    elif split_str[i] == 'x':
+      letter_count['x']+=1
+    elif split_str[i] == 'j':
+      letter_count['j']+=1
+    elif split_str[i] == 'q':
+      letter_count['q']+=1
+    elif split_str[i] == 'z':
+      letter_count['z']+=1
+
+  return letter_count
+
+def normalizeString(str1):
+    #This is negative character class...not beginning of string. Anything NOT A-Z won't match this pattern :)
+    pattern1= '[^A-Z]'
+    penalty= 0
+
+    #Convert string to upper case just so it matches the pattern
+    str1= str1.upper()
+
+    #Returns all matches in an array
+    non_alphabet= re.findall(pattern1, str1)
+
+    for letter in non_alphabet:
+        if letter not in string.printable:
+            penalty+=1000
+        else:
+            continue
+
+    return str1,penalty
+
+#Implement ChiSquare and score all the columns after they are XOR'd
+def frequencyChiSquare(column):
+    expected_count= {}
+    englishLetterFreq = {'E': 12.702, 'T': 9.056, 'A': 8.167, 'O': 7.507, 'I': 6.966, 'N': 6.749, 'S': 6.327, 'H': 6.094, 'R': 5.987, 'D': 4.253, 'L': 4.025, 'C': 2.782, 'U': 2.758, 'M': 2.406, 'W': 2.361, 'F': 2.228, 'G': 2.015, 'Y': 1.974, 'P': 1.929, 'B': 1.492, 'V': 0.978, 'K': 0.772, 'J': 0.153, 'X': 0.150, 'Q': 0.095, 'Z': 0.074}
+
+    #Get the normalized string and the penalty for each non-printable character
+    string,penalty= normalizeString(column)
+
+    if len(string) <= 0:
+        return -1
+
+    lc= letter_frequency(string)
+    expected_count= {key:expected_probability * len(string) for key,expected_probability in englishLetterFreq.items()}
+
+    '''
+    http://practicalcryptography.com/cryptanalysis/text-characterisation/chi-squared-statistic/
+    '''
+    total_chi_square= 0
+    for letter,no_of_occurences in lc.items():
+        chi_square_per_letter= pow(abs(no_of_occurences - expected_count[letter.upper()]), 2)/expected_count[letter.upper()]
+        total_chi_square+= chi_square_per_letter
+
+    #Adding penalty for the non-printable strings that appear in the XOR
+    total_chi_square= total_chi_square+penalty
+    return total_chi_square
+
+def transpose(buffer, keylen):
+    s3= []
+    for offset in range(0, keylen):
+        s3.append(buffer[offset::keylen])
+
+    return s3
+
+def xor_with_all_ascii_string(string):
+    t1= list(string)
+    t2= ascii_to_hex(t1)
+    hex_string= ''.join(t2)
+    s1= xor_with_all_ascii(hex_string)
+    return s1
+
+def xor_with_all_ascii(hex_string):
+    s2= {}
+    s1= [hex_string[i:i+2] for i in range(0,len(hex_string),2)]
+    for num in list(itertools.chain(range(0,128))):
+        t2=[]
+        for x in s1:
+            t2.append(chr(int(x,16) ^ num))
+            s2[num]= ''.join(t2)
+    return s2
 
 def binary_to_ascii(string):
     t2= string[::-1]
@@ -222,41 +379,12 @@ def checkEnglishfrequencyCount(string):
         #print 'Letter:',letter,'Expected:',expected_score[letter],'Actual:',score,'Error:', abs(expected_score[letter] - score)
     else:
         continue
-  #sys.exit(0)
-
-  #print error
   return sum,error
-
-def xor_with_all_ascii(string1):
-  int1=hextoint(string1)
-  n=2
-  plaintext={}
-  for t1 in range(0,128):
-    t3=''
-    if t1 >= 0 and t1 <= 15:
-      hex2=str(hex(t1)[2:]).zfill(2)*(len(string1)/2)
-    else:
-      hex2=str(hex(t1)[2:])*(len(string1)/2)
-
-    int2=hextoint(hex2)
-
-    int_xor_result=xor(int1,int2)  
-    split_str=split_on_specific_char(hex(int_xor_result)[2:-1],n)
-
-    for i in range(0,len(split_str)):
-      t3+=chr(int(split_str[i],16))
-    plaintext[t1]=t3
-
-  return plaintext
-    
-def check_if_all_ascii_frequency(plaintext):
-    pass
-    
 
 def check_if_all_ascii(plaintext):
   is_ascii={}
   for key in plaintext.keys():
-    m1=re.match(r'^[\x20-\x7e]+$', plaintext[key])
+    m1=re.match(r'^[\x09-\x7e]+$', plaintext[key])
     if m1:
       is_ascii[str(chr(key))] = plaintext[key]
   
