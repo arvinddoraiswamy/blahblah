@@ -29,9 +29,7 @@ if __name__ == "__main__":
 
     print "Getting current timestamp and finding range"
     cur_timestamp= int(time.time())
-    for guess in xrange(cur_timestamp-100000,cur_timestamp+1000):
-        if guess % 100000 == 0:
-            print "Done checking upto", guess
+    for guess in xrange(cur_timestamp-1024,cur_timestamp):
         mtrand.clear_state()
         mtrand.init_by_array(guess)
         g1= mtrand.genrand_int32()

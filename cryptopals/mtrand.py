@@ -86,9 +86,22 @@ def genrand_int32():
 
     y= mt[mti]
     mti += 1
-    y= y ^ (y >> u) & d
-    y= y ^ (y << s) & b
-    y= y ^ (y << t) & c
-    y= y ^ y >> l
+    print 'Original number',y
+    y= y ^ ((y >> u) & d)
+    print 'y1',y
+    y= y ^ ((y << s) & b)
+    print 'y2',y
+    y= y ^ ((y << t) & c)
+    print 'y3',y
+    y= y ^ (y >> l)
+    print '-'*10
 
     return y
+
+def untemper(mt):
+    for num in mt:
+        print "Tempered num",num
+    print "Now untempering numbers, so I can predict things"
+    for num in mt:
+        t1= num>>l
+        num= num^t1
