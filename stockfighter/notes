@@ -1,0 +1,38 @@
+A market maker is a market participant (sometimes a formal role, often not) who provides liquidity in a stock, by being willing to buy the stock or sell the stock, substantially all of the time. The market maker seeks to make a small amount of money on a large amount of transactions by, on average, selling for slightly more than their buying price. The difference between the price that they're willing to buy at and the price that they're willing to sell at (at any given moment) is called "the spread".
+
+Market makers are crucial to the financial markets. A market without liquidity is a sucky market. The market for houses has very low liquidity: if you want to sell your house on Tuesday, it is unlikely that anyone wants to buy exactly your house on exactly Tuesday, so you'd probably get a very, very poor price for it. Similarly, if you wanted to buy exactly your dream house on exactly Tuesday, you'd probably have to pay a ridiculous premium to the "fair value" of the house.
+
+Imagine a world where there was someone you would call, name any address in the country, and immediately receive a buying price and a selling price for that house. That person would be a market maker. They would make it much, much less difficult for you to get into or out of your desired exposure to a house on Tuesday.
+
+Market makers are the counter-parties to most transactions on the stock exchange. That sounds unlikely, but it is true: it is highly unlikely that a pension fund seeking to unload 100,000 shares of Google executes that trade at the exact instant where a stadium full of mom-and-pop investors are seeking to buy 2~5 shares of Google apiece.
+
+What Do Market Makers Not Like?
+Market makers don't like inventory risk. They get paid to take on a small, short-term risk of being long (holding stock) or short (borrowing stock) in the stock they're making a market for, with the intention of quickly having an order in the opposite direction get them out of that position.
+
+It is dangerous for a market maker to trade with informed order flow, i.e. someone with better-than-market understanding of the near term future for a stock. Someone who is trading a block (a lot of stock at once) is automatically informed order flow, since they know that their current transaction for buying 100 shares is going to be followed not by a 50/50 chance of a sell but rather with a buy, a buy, another buy, some more buys, followed by more buying.
+
+If a market maker continues to allow informed order flow to trade with them, they may find themselves with a larger position than they anticipated at a price which is expensive to get out of, given the present state of the market.
+
+How Do Market Makers Deal With This?
+Profile incoming orders. Market makers, beginning with humans with "a sense of the flow of the market" and continuing to HFT algorithms in the present day, are in a constant cat-and-mouse game with informed order flow. They'd prefer to transact minimally (if at all) with informed orders.
+
+Hedge. More sophisticated strategies are available after a market maker has multiple instruments they can trade in. For example, they can hedge a long position in a stock with options which synthetially cancel out some features of the position. They could also e.g. hedge a position in a particular stock with an offsetting position in a separate stock believe to be highly correlated with the original stock (e.g. if you're long Toyota, sell Honda), with indexes/exchange traded funds, or with other derivatives.
+
+How Do I Make Markets?
+Buy low. Sell high. Trade frequently.
+
+No, Really?
+Observe what the provided market makers do, in particular how they quote spreads and periodically cancel orders when the market moves in either direction. The provided market makers are as unsophisticated as they can be and possibly work (n.b. under 100 lines of Ruby code). You should be able to easily exploit their blind spots.
+
+A freebie, since people who actually read docs should be rewarded: our least sophisticated market maker has no memory of closed orders and looks at the order book every N seconds as if the universe had just sprung into being. That probably suggests at least one way to trick it into doing what you want.
+
+Bonus points: if what you do to get what you want doesn't leave a signature in the order book, it will never catch on. (Note that a dumb market maker with smart participants next to it can function as a smart system even if they're not intentionally colluding, however. One of the core insights of markets in general is that they quickly converge on solutions which are better than individual participants would have come up with. A market maker can surf on the market, which converges to a solution to your manipulation, without itself understanding that your manipulation even exists.)
+
+In general, you want to
+
+quote a tighter spread (if the bot would quote $10 / $10.50, and you quote $10.05 / $10.45, you'll get the fills rather than the bot)
+attempt to profile incoming orders, for example by keeping state of your own recent orders and whether you appear to be having many similar ones happen in the same direction
+cancel and re-file your bids/asks when you develop inventory in either direction, potentially at a less favorable price if you're scared
+look for patterns in the market and in behavior of other participants. Patterns which suggest anomalous behavior, which routinely divulge that an order is from a sophisticated or unsophisticated source, or which allow you to predict the near-term behavior of another participant are very valuable indeed.
+Stockfighter Notes
+Take a look at the API docs for viewing an order's fills or the details of an execution. Note that we don't expose any identifying information about your counterparty. Now, try to think of creative ways that one can "cheat" the non-availability of that information.

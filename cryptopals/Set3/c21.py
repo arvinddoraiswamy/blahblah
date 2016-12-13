@@ -21,6 +21,7 @@ if __name__ == "__main__":
 
     #Extract a number/numbers from the stored number array. Pass 'how_many_numbers' you want as a command-line argument.
     for i in range(0,int(sys.argv[1])):
-        print mtrand.genrand_int32(),
+        randomnum= mtrand.genrand_int32()
+        print 'Random number',randomnum
         if i%5==4:
             print

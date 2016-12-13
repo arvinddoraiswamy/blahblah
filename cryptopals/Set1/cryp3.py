@@ -12,20 +12,8 @@ string1='1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736'
 
 def main():
     plaintext=utility.xor_with_all_ascii(string1)
-
-    for xor_char,line in plaintext.items():
-        letter_count, score, other_count= utility.checkEnglishfrequencyCount(line)
-
-        if other_count == 0:
-            print line, score, other_count
-        else:
-            continue
-
-    '''
-    is_ascii=utility.check_if_all_ascii(plaintext)
-
-    for key in is_ascii.keys():
-        print key+' ----- '+is_ascii[key]
-    '''
+    result= utility.check_if_all_ascii(plaintext)
+    for k,v in result.items():
+        print k,v
 
 main()
