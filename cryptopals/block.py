@@ -10,20 +10,70 @@ cmd_folder = os.path.dirname('/home/arvind/Documents/Me/My_Projects/Git/Crypto/m
 sys.path.insert(0, cmd_folder)
 import utility
 
-def ctr_counter_fixed_nonce_encrypt(string, key, nonce, counter):
-    t1= nonce+str(counter).zfill(8)
-    t2= openssl_ecb_encrypt(t1, key)
-    return t2
+def decrypt_ctr_byte(enc_string_byte, offset, newtext):
+    key= '71e6efcfb44e362b6e14f7abbecf5503' 
+    nonce= '0'*8
+    counter= offset/16
+    keystream_offset= (offset % 16)
+    keystream= ctr_counter_fixed_nonce_encrypt(key, nonce, counter)
+    guessed_byte= xor(newtext, keystream[keystream_offset])
 
-def ctr_encrypt(decoded_str, key, nonce):
+    if guessed_byte == enc_string_byte:
+        return 1
+
+def ctr_decrypt(input_list, key, nonce):
     blocklen= 16
-    list_encrypted= []
-    for string in decoded_str: 
+    list_decrypted= []
+    for string in input_list: 
         t3= []
         keystream= ''
         counter= len(string)/blocklen + 1
         for i in range(0, counter, 1):
-            t3.append(ctr_counter_fixed_nonce_encrypt(string, key, nonce, i))
+            t3.append(ctr_counter_fixed_nonce_encrypt(key, nonce, i))
+        keystream= ''.join(t3)
+        decrypted= xor(string, keystream)
+        list_decrypted.append(decrypted)
+
+    return list_decrypted
+
+def ctr_counter_fixed_nonce_encrypt(key, nonce, counter):
+    t1= nonce+str(counter).zfill(8)
+    t2= openssl_ecb_encrypt(t1, key)
+    return t2
+
+def ctr_encrypt_string(enc_string, key, nonce):
+    blocklen= 16
+    list_encrypted= []
+    t3= []
+    keystream= ''
+    counter= len(enc_string)/blocklen + 1
+    for i in range(0, counter, 1):
+        t3.append(ctr_counter_fixed_nonce_encrypt(key, nonce, i))
+    keystream= ''.join(t3)
+    encrypted_string= xor(enc_string, keystream)
+    return encrypted_string
+
+def ctr_decrypt_string(enc_string, key, nonce):
+    blocklen= 16
+    list_encrypted= []
+    t3= []
+    keystream= ''
+    counter= len(enc_string)/blocklen + 1
+    for i in range(0, counter, 1):
+        t3.append(ctr_counter_fixed_nonce_encrypt(key, nonce, i))
+    keystream= ''.join(t3)
+    decrypted_string= xor(enc_string, keystream)
+    return decrypted_string
+
+def ctr_encrypt(input_list, key, nonce):
+    blocklen= 16
+    list_encrypted= []
+    for string in input_list: 
+        t3= []
+        keystream= ''
+        counter= len(string)/blocklen + 1
+        for i in range(0, counter, 1):
+            t3.append(ctr_counter_fixed_nonce_encrypt(key, nonce, i))
         keystream= ''.join(t3)
         encrypted= xor(string, keystream)
         list_encrypted.append(encrypted)
@@ -71,6 +121,15 @@ def convert_to_json(email):
     profile= '{\n '+profile+'\n}'
     return profile
     
+def exception_high_ascii(string):
+    t1= list(string)
+    for char in t1:
+        if ord(char) >= 127:
+            return 1
+        else:
+            continue
+
+    return None
 
 def eat_chars(string,chars_to_filter):
     for char in chars_to_filter:
