@@ -1,22 +1,22 @@
 import requests
 import datetime
+import operator
+import sys
 
 url= 'http://localhost:9000/test?'
-file_qs='file=brownie&'
+file_qs='file=fddoo&'
 sig_qs ='signature='
 
 siglen= 40
-guessed_bytes= ''
-
-min_time_diff= 50
 byte_count= 0
+guessed_bytes= ''
+req_url= ''
 
 ''' http://localhost:9000/test?file=foo&signature=24b2d4322e50bf57c88697644e2fd1450794ab5c '''
 ''' http://localhost:9000/test?file=fddoo&signature=6f62e47b625aeec1cb239258523dd7e03d4cb906 '''
 while len(guessed_bytes) < siglen:
+    req_time= {}
     byte_count += 1
-    match_detector_time = min_time_diff * byte_count
-
     for byte in range(0,256):
         req_url= url+file_qs+sig_qs+guessed_bytes
         diff= siglen - len(guessed_bytes)
@@ -26,14 +26,14 @@ while len(guessed_bytes) < siglen:
         resp= requests.get(req_url)
         end_time= datetime.datetime.now()
         diff= end_time - start_time
-        time_diff= int(diff.total_seconds() * 1000)
-        
-        if time_diff > match_detector_time:
-            print 'Guessed byte', byte_count, hex(byte)[2:]
-            guessed_bytes += hex(byte)[2:].zfill(2)
-            break
-        else:
-            continue
+        req_time[hex(byte)]= diff.total_seconds()
+
+    sorted_req_time= []
+    for key, value in sorted(req_time.items(), key=operator.itemgetter(1)):
+        sorted_req_time.append(key)
+
+    print 'Guessed byte', byte_count, sorted_req_time[-1][2:].zfill(2)
+    guessed_bytes += sorted_req_time[-1][2:].zfill(2)
 
 req_url= url+file_qs+sig_qs+guessed_bytes
 resp= requests.get(req_url)

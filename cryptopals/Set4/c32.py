@@ -43,7 +43,7 @@ class test:
         status= 1
         for count in range(0, len(l1)):
             if l1[count] == l2[count]:
-                time.sleep(50.0/1000.0)
+                time.sleep(5.0/1000.0)
                 continue
             else:
                 status= 0
