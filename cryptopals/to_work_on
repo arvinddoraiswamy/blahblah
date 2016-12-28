@@ -1,3 +1,7 @@
+Optimizing:
 Set 2 - Chal 14. Random length string every time
 Set 2 - Chal 17. Parallelize cracking blocks instead of doing it linearly
+
+Could not solve:
 Set 3 - Chal 23 & 24. Bit shifting trouble.
+Set 4 - Chal 29 & 30. Hash length extension. Something not working.
