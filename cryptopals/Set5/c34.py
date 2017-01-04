@@ -52,27 +52,32 @@ if __name__ == '__main__':
     print 'Encrypted text from B to A', repr(enc_to_A)
     print '-' * 50
 
+    '''
+    MITM Attack starts here
+    '''
     print 'This is the MITM case'
-    #A sends p, g and A to B but it is intercepted by M who sends p, g, p instead. B calculates the shared secret using 'p' instead of A
-    s2= pow(p, b, p)
+    #User A sends p, g and A to B but it is intercepted by M who sends p, g, mA instead. B calculates the shared secret using 'mA' instead of A. Meaning there's a connection now between M and B using a shared secret chosen by the attacker
+    mb= random.getrandbits(256)
+    mB= pow(g, mb, p)
+    secretB= pow(mB, b, p)
+    keyB= hashlib.sha1(str(secretB)).hexdigest()[0:16]
 
-    #B sends back MB to A, but this also is MITMed, dropped and 'p' is sent back to A. Effectively, the attacker has replaced A and B with a value of their own choice #and can hence calculate the shared secret themselves now A now calculates a shared secret using 'p' as well, instead of B
-    s1= pow(p, a, p)
+    #User B encrypts traffic with keyB and sends it to User A. This traffic can be MITM'd by M who can also generate keyB and decrypt the traffic.
+    enc_to_A= block.openssl_cbc_encrypt(msg_to_A, block_size, keyB, binascii.a2b_hex(iv_to_A[2:]))
+    print 'Encrypted text from A to B', repr(enc_to_A)
 
-    #Both A and B calculate the same key too
-    keyA= hashlib.sha1(str(s1)).hexdigest()[0:16]
-    keyB= hashlib.sha1(str(s1)).hexdigest()[0:16]
-    if keyA == keyB:
-        print 'Okay. Keys match. Now both sides use this to encrypt traffic.'
-        print "Key used to decrypt is", keyA
+    dec_to_A= block.openssl_cbc_decrypt(enc_to_A, keyB, binascii.a2b_hex(iv_to_A[2:]))
+    print 'Decrypted text from A to B', repr(dec_to_A)
+    
+    #User B sends back B to A, but this also is MITMed, dropped and 'mB' is sent back to A. Meaning there's a connection now between M and A using a second shared secret.
+    ma= random.getrandbits(256)
+    mA= pow(g, ma, p)
+    secretA= pow(mA, a, p)
+    keyA= hashlib.sha1(str(secretA)).hexdigest()[0:16]
 
-    ''' This now means that the only thing that is secret is the private random numbers that User A and User B picked. Since these are never sent over the wire, the MITM attacker does not have it '''
-    #A encrypts text, M just passes it on to B
+    #User A encrypts traffic with keyA and sends it to User B. This traffic can be MITM'd by M who can also generate keyA and decrypt the traffic.
     enc_to_B= block.openssl_cbc_encrypt(msg_to_B, block_size, keyB, binascii.a2b_hex(iv_to_B[2:]))
-    print 'Encrypted text from A to B', repr(enc_to_B)
+    print 'Encrypted text from B to A', repr(enc_to_B)
 
-    #B encrypts text, M just passes it on to A
-    enc_to_A= block.openssl_cbc_encrypt(msg_to_A, block_size, keyA, binascii.a2b_hex(iv_to_A[2:]))
-    print 'Encrypted text from B to A', repr(enc_to_A)
-
-    ''' Generic attack makes sense (http://security.stackexchange.com/questions/91699/why-cant-i-mitm-a-diffie-hellman-key-exchange), but not clear how this parameter injection thing works yet '''
+    dec_to_B= block.openssl_cbc_decrypt(enc_to_B, keyB, binascii.a2b_hex(iv_to_B[2:]))
+    print 'Decrypted text from B to A', repr(dec_to_B)
