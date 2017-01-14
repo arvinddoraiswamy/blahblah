@@ -41,19 +41,16 @@ class init:
 
         t1= long(A) * pow(v, u, N)
         S= pow(t1, b, N)
+        print 'Secret becomes ', S
 
         sKey= hashlib.sha256(str(S)).hexdigest()
-        ''' Ok till here '''
+        print 'Key ', sKey
+
         shmac = hmac.new(sKey, msg=str(salt), digestmod=hashlib.sha256).hexdigest()
         return shmac
 
     def GET(self):
         user_data= web.input()
-
-        '''
-        Sessions are not getting saved for the second request
-        '''
-        
         if 'hmac' in user_data.keys():
             with open('tmpsess','r') as f:
                 expected_hmac= f.read()
@@ -65,7 +62,6 @@ class init:
         else:
             session.salt= random.randint(0, pow(2,32))
             session.b= random.getrandbits(256)
-            session.b= 30
             session.A= user_data.A
             session.I= user_data.I
 
