@@ -10,18 +10,19 @@ if __name__ == '__main__':
     k= 3
     I= 'teddy@boo.org'
     P= 'teddybear'
-
     req_url= 'http://localhost:9000/init?'
 
     #Client to server, send EMail address and A just like in Diffie Hellman
     a= random.getrandbits(256)
-    C_A= pow(g, a, N)
-    params= 'I=' + str(I) + '&A=' + str(C_A)
+    A= pow(g, a, N)
+    params= 'I=' + str(I) + '&A=' + str(A) + '&P=' + str(P)
     req_url += params
+
+    #Use server response here and compute the shared secret
     resp= requests.get(req_url)
     t3= resp.content.split(', ')
 
-    uH= hashlib.sha256(str(C_A) + t3[1][:-1]).hexdigest()
+    uH= hashlib.sha256(str(A) + t3[1][:-2]).hexdigest()
     u = int(uH, 16)
 
     xH= hashlib.sha256(str(t3[0][1:]) + str(P)).hexdigest()
@@ -30,11 +31,12 @@ if __name__ == '__main__':
     t1= long(t3[1][:-1]) - (k * pow(g, x, N))
     t2= a + (u * x)
     S= pow(t1, t2, N)
+
     cKey= hashlib.sha256(str(S)).hexdigest()
-    chmac = hmac.new(cKey, msg=str(t3[0]), digestmod=hashlib.sha256).hexdigest()
+    chmac = hmac.new(cKey, msg=str(t3[0][1:]), digestmod=hashlib.sha256).hexdigest()
 
-    req_url= 'http://localhost:9000/check?hmac=' + str(chmac)
+    req_url= 'http://localhost:9000/init?hmac='
+    req_url += chmac
     resp= requests.get(req_url)
-
-    if resp == 'OK':
-        print 'Logged in successfully'
+    
+    print resp.content
