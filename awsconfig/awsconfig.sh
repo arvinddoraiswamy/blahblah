@@ -1,11 +1,11 @@
 #Defining all 14 AWS regions for use in every query in this script
-regions=( 'us-east-1' 'us-east-2' 'us-west-1' 'us-west-2' 'ca-central-1' 'eu-west-1' 'eu-central-1' 'eu-west-2' 'ap-northeast-1' 'ap-northeast-2' 'ap-southeast-1' 'ap-southeast-2' 'ap-south-1' 'sa-east-1')
+#regions=( 'us-east-1' 'us-east-2' 'us-west-1' 'us-west-2' 'ca-central-1' 'eu-west-1' 'eu-central-1' 'eu-west-2' 'ap-northeast-1' 'ap-northeast-2' 'ap-southeast-1' 'ap-southeast-2' 'ap-south-1' 'sa-east-1')
 
 #Choosing 1 region to use as a global region for global services
 global_region=us-east-1
 
 #Uncommented only during testing
-#regions=( 'us-east-1' 'us-west-2' ) 
+regions=( 'us-east-1' 'us-west-2' ) 
 
 #Per Region Services
 for region in "${regions[@]}"
@@ -110,6 +110,10 @@ do
     done
 
     aws redshift describe-cluster-security-groups --region $region --query "ClusterSecurityGroups[*].IpRanges" --output text
+
+    #   - ACM Expired certificates
+    echo -e "\nACM Expired Certificates\n"
+    aws acm list-certificates --region $region --certificate-statuses EXPIRED
 
     echo -e "\n-----------------------------------------------------------------------------------------------------------------------------\n"
 done
