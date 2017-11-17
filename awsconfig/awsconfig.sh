@@ -139,14 +139,14 @@ done
 #echo -e   "\nTesting services that are region independent\n"
 ##IAM
 #
-##   - List access keys created more than 90 days ago.
+##   - List access keys created more than 180 days ago.
 #
 service=iam
 echo -e   "\nTesting $service\n"
-d1=$(date +%Y-%m-%d -d "90 days ago")
+d1=$(date +%Y-%m-%d -d "180 days ago")
 for user in `aws iam list-users --query 'Users[*].UserName' --region $global_region --output text`
 do
-    echo -e   "\nIAM Access Keys > 90 days old for user:'$user'..."   >> $outputdir/$service.txt
+    echo -e   "\nIAM Access Keys > 180 days old for user:'$user'..."   >> $outputdir/$service.txt
     aws iam list-access-keys --user-name $user --query "AccessKeyMetadata[?CreateDate <= '$d1'].[UserName, CreateDate, AccessKeyId]" --region $global_region >> $outputdir/$service.txt
 done
 
