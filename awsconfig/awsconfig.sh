@@ -155,7 +155,7 @@ do
 
     #   - AutoScaling
     #   NO TESTS as of now. Will revisit later
-#done
+done
 
 ###Global Configuration Services
 ##
@@ -231,7 +231,7 @@ do
     echo -e   "MFA Delete for bucket $bucket" >> $outputdir/$service.txt
 
     #If output is blank, it means versioning & MFA delete is not enabled
-    aws s3api get-bucket-versioning --bucket $bucket --region $global_region --query "Status,MFADelete" >> $outputdir/$service.txt
+    aws s3api get-bucket-versioning --bucket $bucket --region $global_region --query "[Status,MFADelete]" >> $outputdir/$service.txt
 
     echo -e   "Publicly accessible bucket for bucket $bucket" >> $outputdir/$service.txt
 done
