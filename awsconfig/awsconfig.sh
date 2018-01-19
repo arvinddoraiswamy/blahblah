@@ -20,9 +20,9 @@ do
 #    #    - Is cloud trail enabled across all regions?
 #    #    - Is log-file-validation turned on?
 #    #    - Are trails encrypted?
-    service=cloudtrail
-    echo -e   "\nCloudtrail configuration in region:'$region'..."  > $outputdir/$region/$service.txt
-    aws cloudtrail describe-trails --region $region --query 'trailList[*].{name:Name, log_file_validate:LogFileValidationEnabled, in_all_regions:IsMultiRegionTrail, KmsKeyId:KmsKeyId}' > $outputdir/$region/$service.txt
+#    service=cloudtrail
+#    echo -e   "\nCloudtrail configuration in region:'$region'..."  > $outputdir/$region/$service.txt
+#    aws cloudtrail describe-trails --region $region --query 'trailList[*].{name:Name, log_file_validate:LogFileValidationEnabled, in_all_regions:IsMultiRegionTrail, KmsKeyId:KmsKeyId}' > $outputdir/$region/$service.txt
 #
 #    #CloudWatch
 #    #    - Are alarms enabled for specific services that your functionality needs? For e.g If you depend on S3, have S3 related CloudWatch alarms.
@@ -33,19 +33,27 @@ do
 #    #EC2
 #    #   - Any instances with no EC2 keys attached? 
 #    service=ec2
-#    echo -e   "\nEC2 configuration in region:'$region'..."  > $outputdir/$region/$service.txt
+#    echo -e "\nEC2 configuration in region:'$region'..."  > $outputdir/$region/$service.txt
 #    aws ec2 describe-instances --region $region --query 'Reservations[*].Instances[*].{EC2_Instance_Id:InstanceId, KeyPairName: KeyName, PublicIP:PublicIpAddress}'  >> $outputdir/$region/$service.txt
-#    echo -e   "\n***********Connect to the public IPs above and see if you get prompted for a password. It means SSH password authentication is enabled.**************"  >> $outputdir/$region/$service.txt
+#    echo -e "\n***********Connect to the public IPs above and see if you get prompted for a password. It means SSH password authentication is enabled.**************"  >> $outputdir/$region/$service.txt
+#    echo -e "--------" >> $outputdir/$region/$service.txt
 #
 #    #   - EC2 Security Groups not overly permissive
 #    aws ec2 describe-security-groups --region $region --query 'SecurityGroups[*].{"GroupName":GroupName, "ipv4":IpPermissions[*].IpRanges[*].CidrIp, "ipv6":IpPermissions[*].Ipv6Ranges[*].CidrIp, "fromport":IpPermissions[*].FromPort, "toport":IpPermissions[*].ToPort}'  >> $outputdir/$region/$service.txt
 #
+#    echo -e "--------" >> $outputdir/$region/$service.txt
+#     #   - EC2 Instance Termination Protection
+#     for instanceid in `aws ec2 describe-instances --region $region --output text --query Reservations[*].Instances[*].InstanceId`
+#     do
+#        aws ec2 describe-instance-attribute --region $region --instance-id $instanceid --attribute disableApiTermination >> $outputdir/$region/$service.txt
+#     done
+#
 #    #	- RDS List instances
-#    #   - RDS backup configuration
-#    #   - RDS data store encryption
-#    #   - RDS not multi Availability Zone
+#    #  - RDS backup configuration
+#    #  - RDS data store encryption
+#    #  - RDS not multi Availability Zone
 #    #	- RDS security groups
-#    #   - RDS Public DB Snapshots
+#    #  - RDS Public DB Snapshots
 #
 #    service=rds
 #    echo -e   "\nRDS List DB Instances\n"  >> $outputdir/$region/$service.txt
@@ -153,8 +161,27 @@ do
 #        echo -e `aws apigateway get-stages --rest-api-id $api --query "item[*].[stageName, methodSettings]" --region $region`
 #    done
 
-    #   - AutoScaling
-    #   NO TESTS as of now. Will revisit later
+#   #   - AutoScaling
+#   NO TESTS as of now. Will revisit later
+
+#   #   - EBS Volume & Snapshot Encryption
+#    service=ec2_ebs
+#    echo -e "\nEBS Volume configuration in region:'$region'..."  >> $outputdir/$region/$service.txt
+#    aws ec2 describe-volumes --region $region --query "Volumes[*].{volumeid:VolumeId,encrypted:Encrypted}" >> $outputdir/$region/$service.txt
+#    echo -e "\nEBS Snapshot configuration in region:'$region'..."  >> $outputdir/$region/$service.txt
+#    for snapshotid in `aws ec2 describe-volumes --region $region --query "Volumes[*].SnapshotId" --output text`
+#    do
+#        aws ec2 describe-snapshots --snapshot-id $snapshotid --region $region --query "Snapshots[*].{snapshotid:SnapshotId, encrypted:Encrypted}" >> $outputdir/$region/$service.txt
+#    done
+
+#   #   - EFS FileSystem Encryption
+#    service=efs
+#    echo -e "\nEFS Filesystem configuration in region:'$region'..."  >> $outputdir/$region/$service.txt
+#    for filesystemid in `aws efs describe-file-systems --region us-east-1 --query 'FileSystems[*].FileSystemId' --output text`
+#    do
+#        aws efs describe-file-systems --region us-east-1 --file-system-id $filesystemid --query 'FileSystems[*].{filesystemid:FileSystemId, encrypted:Encrypted}' >> $outputdir/$region/$service.txt
+#    done
+
 done
 
 ###Global Configuration Services
@@ -210,31 +237,31 @@ done
 #    #	- S3 CORS Policies
 #    #	- S3 Logging Policies
 #    #	- S3 Versioning policies
-service=s3
-echo -e   "Testing $service"
-for bucket in `aws s3api list-buckets --query "Buckets[].Name" --output text --region $global_region`
-do
-    echo -e   "\nTesting bucket $bucket\n" >> $outputdir/$service.txt 2>&1
-    echo -e   "S3 bucket policies for $bucket" >> $outputdir/$service.txt
-    aws s3api get-bucket-acl --bucket $bucket --region $global_region >> $outputdir/$service.txt 2>&1
-    echo -e   >> $outputdir/$service.txt
-
-    echo -e   "S3 CORS Policies for bucket $bucket" >> $outputdir/$service.txt
-    aws s3api get-bucket-cors --bucket $bucket --region $global_region >> $outputdir/$service.txt 2>&1
-    echo -e   >> $outputdir/$service.txt
-
-    echo -e   "S3 Logging for bucket $bucket" >> $outputdir/$service.txt
-    aws s3api get-bucket-logging --bucket $bucket --region $global_region >> $outputdir/$service.txt
-    echo -e   >> $outputdir/$service.txt
-
-    echo -e   "S3 Versioning for bucket $bucket" >> $outputdir/$service.txt
-    echo -e   "MFA Delete for bucket $bucket" >> $outputdir/$service.txt
-
-    #If output is blank, it means versioning & MFA delete is not enabled
-    aws s3api get-bucket-versioning --bucket $bucket --region $global_region --query "[Status,MFADelete]" >> $outputdir/$service.txt
-
-    echo -e   "Publicly accessible bucket for bucket $bucket" >> $outputdir/$service.txt
-done
+#service=s3
+#echo -e   "Testing $service"
+#for bucket in `aws s3api list-buckets --query "Buckets[].Name" --output text --region $global_region`
+#do
+#    echo -e   "\nTesting bucket $bucket\n" >> $outputdir/$service.txt 2>&1
+#    echo -e   "S3 bucket policies for $bucket" >> $outputdir/$service.txt
+#    aws s3api get-bucket-acl --bucket $bucket --region $global_region >> $outputdir/$service.txt 2>&1
+#    echo -e   >> $outputdir/$service.txt
+#
+#    echo -e   "S3 CORS Policies for bucket $bucket" >> $outputdir/$service.txt
+#    aws s3api get-bucket-cors --bucket $bucket --region $global_region >> $outputdir/$service.txt 2>&1
+#    echo -e   >> $outputdir/$service.txt
+#
+#    echo -e   "S3 Logging for bucket $bucket" >> $outputdir/$service.txt
+#    aws s3api get-bucket-logging --bucket $bucket --region $global_region >> $outputdir/$service.txt
+#    echo -e   >> $outputdir/$service.txt
+#
+#    echo -e   "S3 Versioning for bucket $bucket" >> $outputdir/$service.txt
+#    echo -e   "MFA Delete for bucket $bucket" >> $outputdir/$service.txt
+#
+#    #If output is blank, it means versioning & MFA delete is not enabled
+#    aws s3api get-bucket-versioning --bucket $bucket --region $global_region --query "[Status,MFADelete]" >> $outputdir/$service.txt
+#
+#    echo -e   "Publicly accessible bucket for bucket $bucket" >> $outputdir/$service.txt
+#done
 #
 ##   - CloudFront security
 #    #   - Integration with WAF
