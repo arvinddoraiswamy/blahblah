@@ -82,16 +82,17 @@ do
 #    echo -e   "\nVPC Network Access Control Lists in $region\n"  >> $outputdir/$region/$service.txt
 #    aws ec2 describe-network-acls --region $region --query 'NetworkAcls[*].[VpcId, Associations[*].[SubnetId, NetworkAclId], Entries[*].[CidrBlock, RuleAction, Egress]]'  >> $outputdir/$region/$service.txt
 #
-#    #   - CloudFormation Stack Policy
+#    #   - CloudFormation Stack Policy and Termination Protection
 #    service=cloudformation
 #    echo -e   "\nCloudFormation stack policy in $region\n"  >> $outputdir/$region/$service.txt
-#    for policy in `aws cloudformation list-stacks --region $region --stack-status-filter CREATE_COMPLETE --query 'StackSummaries[*].StackId' --output text`
+#    for policy in `aws cloudformation list-stacks --region $region --stack-status-filter CREATE_COMPLETE UPDATE_COMPLETE --query 'StackSummaries[*].StackId' --output text`
 #    do
 #        aws cloudformation get-stack-policy --stack-name $policy --region $region --output text  >> $outputdir/$region/$service.txt
 #    done
 #
 #    echo -e   "\nCloudFormation stack termination protection in $region\n"  >> $outputdir/$region/$service.txt
-#    for stackname in `aws cloudformation list-stacks --region $region --stack-status-filter CREATE_COMPLETE --query 'StackSummaries[*].StackName' --output text`
+##   *********This does not appear to work properly and nothing returns*****
+#    for stackname in `aws cloudformation list-stacks --region $region --stack-status-filter CREATE_COMPLETE UPDATE_COMPLETE --query 'StackSummaries[*].StackName' --output text`
 #    do
 #        aws cloudformation describe-stacks --region $region --stack-name $stackname --query 'Stacks[*].EnableTerminationProtection' --output text >> $outputdir/$region/$service.txt
 #    done
@@ -162,7 +163,7 @@ do
 #    done
 
 #   #   - AutoScaling
-#   NO TESTS as of now. Will revisit later
+#   #NO TESTS as of now. Will revisit later
 
 #   #   - EBS Volume & Snapshot Encryption
 #    service=ec2_ebs
@@ -181,7 +182,22 @@ do
 #    do
 #        aws efs describe-file-systems --region us-east-1 --file-system-id $filesystemid --query 'FileSystems[*].{filesystemid:FileSystemId, encrypted:Encrypted}' >> $outputdir/$region/$service.txt
 #    done
+#   #   - Elastic Beanstalk Logging
+#     service=elasticbeanstalk
+#     echo -e "\nElastic Beanstalk in region :'$region'..."  >> $outputdir/$region/$service.txt
+#     echo -e >> $outputdir/$region/$service.txt
+#     environments=`aws elasticbeanstalk describe-environments --region $region --output text --query 'Environments[*].EnvironmentName'`
+#     for env in $environments
+#     do
+#        for appname in `aws elasticbeanstalk describe-environments --region $region --environment-names $env --query 'Environments[*].ApplicationName' --output text`
+#            do
+#                echo "Environment name - $env" >> $outputdir/$region/$service.txt
+#                echo "Application name - $appname" >> $outputdir/$region/$service.txt
+#                aws elasticbeanstalk describe-configuration-settings --region $region --environment-name $env --application-name $appname --query 'ConfigurationSettings[*].OptionSettings[?OptionName==`LogPublicationControl` || OptionName==`StreamLogs`] | []' >> $outputdir/$region/$service.txt
+#            done
+#     done
 
+#   START AGAIN AT ELASTICACHE
 done
 
 ###Global Configuration Services
