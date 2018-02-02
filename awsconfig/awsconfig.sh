@@ -197,7 +197,23 @@ do
 #            done
 #     done
 
-#   START AGAIN AT ELASTICACHE
+   #   - Elasticache Database encryption
+     service=elasticache
+     echo -e "\nElasticache in region :'$region'..."  >> $outputdir/$region/$service.txt
+     echo -e >> $outputdir/$region/$service.txt
+     for cluster in `aws elasticache describe-cache-clusters --region $region --query "CacheClusters[?(Engine=='redis') && (EngineVersion=='3.2.6')].ReplicationGroupId" --output text`
+     do
+        aws elasticache describe-replication-groups --region $region --replication-group-id $cluster --query 'ReplicationGroups[*].{id:ReplicationGroupId, encryptionatrest:AtRestEncryptionEnabled, encryptionintransit:TransitEncryptionEnabled}' >> $outputdir/$region/$service.txt
+     done
+
+#   #   - Elastic Search
+    service=elasticsearch
+    echo -e "\nAccess to ES clusters in region via over-permissive polices: $region\n" >> $outputdir/$region/$service.txt
+    echo -e >> $outputdir/$region/$service.txt
+    for domainname in `aws es list-domain-names --region $region --output text --query 'DomainNames[*].DomainName'`
+    do
+        aws es describe-elasticsearch-domain --domain-name $domainname --region $region --query 'DomainStatus.{accesspolicies:AccessPolicies, endpoint:Endpoint, encryptionatrest:EncryptionAtRestOptions}' >> $outputdir/$region/$service.txt
+    done
 done
 
 ###Global Configuration Services
