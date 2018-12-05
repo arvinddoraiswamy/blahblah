@@ -97,15 +97,16 @@ do
 #        aws cloudformation describe-stacks --region $region --stack-name $stackname --query 'Stacks[*].EnableTerminationProtection' --output text >> $outputdir/$region/$service.txt
 #    done
 #
-#    #   - ELBv2 Application Load Balancer attributes
-#    service=elbv2
-#    echo -e   "\nLoad Balancers in $region\n"  >> $outputdir/$region/$service.txt
-#    for loadbalancer in `aws elbv2 describe-load-balancers --region $region --query "LoadBalancers[*].LoadBalancerArn" --output text`
-#    do
-#        
-#        echo -e   "\nApplication Load balancer attributes for $loadbalancer in $region\n"  >> $outputdir/$region/$service.txt
-#        aws elbv2 describe-load-balancer-attributes --region $region --load-balancer-arn $loadbalancer  >> $outputdir/$region/$service.txt
-#    done
+    #   - ELBv2 Application Load Balancer attributes
+    service=elbv2
+    echo -e   "\nELBv2 Load Balancers in $region\n"  >> $outputdir/$region/$service.txt
+    for loadbalancer in `aws elbv2 describe-load-balancers --region $region --query "LoadBalancers[*].LoadBalancerArn" --output text`
+    do
+        echo -e "\nNetwork/Application Load balancer Deletion protection for $loadbalancer in $region\n"  >> $outputdir/$region/$service.txt
+        aws elbv2 describe-load-balancer-attributes --region $region --load-balancer-arn $loadbalancer  >> $outputdir/$region/$service.txt
+        echo -e "\nOlder insecure load balancer SSL policy\n" >> $outputdir/$region/$service.txt
+        aws elbv2 describe-listeners --region $region --load-balancer-arn $loadbalancer --query 'Listeners[*].{loadbalancerarn:LoadBalancerArn, sslpolicy:SslPolicy}' --output text >> $outputdir/$region/$service.txt
+    done
 #
 #    #   - SNS Topic permissions
 #    service=sns
