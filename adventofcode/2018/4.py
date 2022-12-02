@@ -1,23 +1,7 @@
 '''
-[1518-11-01 00:00] Guard #10 begins shift
-[1518-11-01 00:05] falls asleep
-[1518-11-01 00:25] wakes up
-[1518-11-01 00:30] falls asleep
-[1518-11-01 00:55] wakes up
-[1518-11-01 23:58] Guard #99 begins shift
-[1518-11-02 00:40] falls asleep
-[1518-11-02 00:50] wakes up
-[1518-11-03 00:05] Guard #10 begins shift
-[1518-11-03 00:24] falls asleep
-[1518-11-03 00:29] wakes up
-[1518-11-04 00:02] Guard #99 begins shift
-[1518-11-04 00:36] falls asleep
-[1518-11-04 00:46] wakes up
-[1518-11-05 00:03] Guard #99 begins shift
-[1518-11-05 00:45] falls asleep
-[1518-11-05 00:55] wakes up
+tl;dr Sort by date to get the guard entries in the right order. The other thing that's key is that all of a Guard's data gets over before the next Guard starts. Use patterns in lines between guards
+to solve this.
 '''
-
 import re
 import sys
 from collections import Counter
@@ -42,7 +26,6 @@ for record in data:
         year,month,day = date.split('-')
         hour,minute = time.split(':')
         minute = int(minute)
-        #print(year,month,day,hour,minute)
 
         #Get Guard Id
         guard_data = match.group(2)
