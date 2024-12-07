@@ -2,37 +2,38 @@ import utils
 
 def main():
     global input_data
-    input_data = utils.read_input('7.txt')
-    #input_data = utils.read_input('dump.txt')
+    #input_data = utils.read_input('7.txt')
+    input_data = utils.read_input('dump.txt')
     contents = create_tree()
-    answer = get_size(contents)
+    for k,v in contents.items():
+        print(k,v)
+    print('-' * 10)
+    answer = get_sizes(contents)
     print(f"Answer: {answer}")
 
 
-def get_size(contents):
+def get_sizes(contents):
     sizes = {}
-    for dirs, dir_files in contents.items():
-        for name, size in dir_files.items():
-            if dirs in sizes:
-                sizes[dirs] += size
-            else:
-                sizes[dirs] = size
+    for k,v in contents.items():
+        size = 0
+        for entry in v.values():
+            if not isinstance(entry, dict):
+                size += entry    
+        sizes[k] = size
 
-    #print(sizes)
-    #print('-' * 10)
-
-    #Account for recursive directories
-    for dirs, dir_files in contents.items():
-        for name, size in dir_files.items():
-            if size == 0 and name in sizes:
-                sizes[dirs] += sizes[name]
-        
-    #Calculate answer
+    for k,v in sizes.items():
+        print(k,v)
+    print('-' * 10)
+    for k,v in contents.items():
+        size = 0
+        for k1,v1 in v.items():
+            if isinstance(v1, dict):
+                size += sizes[k1]
+        sizes[k] += size
     answer = 0
-    for dir_name, size in sizes.items():
-        if size <= 100000:
-            answer += size
-            print(dir_name, size)
+    for k,v in sizes.items():
+        if v <= 100000:
+            answer += v
 
     return answer
 
@@ -42,29 +43,25 @@ def create_tree():
     i = 0
     pwd = []
     while i < len(input_data):
-        line = input_data [i].split(' ')
+        line = input_data[i].split(' ')
         if line[0] == '$':
             if line[1] == 'cd':
-                #print(i, 'command', line)
                 if line[2] == '..':
                     pwd.pop() 
                 else:
                     pwd.append(line[2])
-                if line[2] not in contents and line[2] != '..':
-                    contents[line[2]] = {}
-                print('pwd:', pwd)
+                    if len(pwd) >= 2:
+                        if pwd[-1] not in contents:
+                            contents[pwd[-1]] = {}
+                    else:
+                        contents[pwd[-1]] = {}
             elif line[0] == 'ls':
                 i += 1
         elif line[0] == 'dir':
-            #print(i, 'directory', line)
-            contents[pwd[-1]][line[1]] = 0
+            contents[pwd[-1]][line[1]] = {}
         elif line[0].isnumeric():
-            #print(i, 'file', line)
             contents[pwd[-1]][line[1]] = int(line[0])
         i += 1
-    print('-' * 10)
-    for k,v in contents.items():
-        print(k,v)
 
     return contents
 

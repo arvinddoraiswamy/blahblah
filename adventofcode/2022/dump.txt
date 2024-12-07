@@ -13,9 +13,6 @@ dir e
 $ cd e
 $ ls
 584 i
-$ cd e
-$ ls
-584 i
 $ cd ..
 $ cd ..
 $ cd d
@@ -24,3 +21,10 @@ $ ls
 8033020 d.log
 5626152 d.ext
 7214296 k
+dir e
+29116 f
+2557 g
+62596 h.lst
+$ cd e
+$ ls
+584 i
